@@ -1,0 +1,45 @@
+/*
+ * report.txt
+ *
+ * Author: Shichao Hu
+ * Date Created: 2/4/2016
+ * Last Modified by: Shichao Hu
+ * Date Last Modified: 2/8/2016
+ * Part of: Lab4
+ * Partner: Kyle Dijkstra
+ */
+
+
+1. What are specs of the board you are using?
+
+	board: Cortex-M4
+	speed: 72 MHz
+	flash: 64- to 256- Kbyte
+	RAM: up to 48-Kbyte SRAM
+
+2. What does GPIO stand for?
+
+	It stands for general-purpose input/output
+
+3. Is the provided delay function accurate? Why or why not? 
+
+	I don't think it is accurate, since delay function does not take any parameter and the value of i determines the time of delay, in this case, i = 2000000 is not likely to be seconds.
+
+4. What are the Port and Pin Numbers of the two Green LEDs?
+
+	Port Number: E
+	Pin Number: 11 & 15
+
+5. What are the public attributes of the GPIO_InitTypeDef Struct?
+
+		uint32_t 	GPIO_Pin
+	GPIOMode_TypeDef 	GPIO_Mode
+	GPIOSpeed_TypeDef 	GPIO_Speed
+	GPIOOType_TypeDef 	GPIO_OType
+	GPIOPuPd_TypeDef 	GPIO_PuPd
+
+Difficulties:
+
+	Regarding the board itself, we had a lot of problems. Either the connection problem or download problem. We got many error messages at the beginning and have to ask help from AIs. (for instance, error #127, error # 255)
+	
+	On the code part, we are doing fine except the while(1) loop. We believe we had the code right, but the user button doesn't behave properly due to lack of constant checking which we figured out later.
