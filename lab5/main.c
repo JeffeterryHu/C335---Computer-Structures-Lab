@@ -45,9 +45,9 @@ int main(void) {
   setvbuf(stdout, NULL, _IONBF, 0);
   setvbuf(stderr, NULL, _IONBF, 0);
   
-  while (1){
-    putstring("hello"); 
- }
+  printf("wc is running");
+  mywc();
+
 }
 
 #ifdef USE_FULL_ASSERT

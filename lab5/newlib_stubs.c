@@ -32,8 +32,6 @@ extern int errno;
 char *__env[1] = { 0 };
 char **environ = __env;
 
-int _write(int file, char *ptr, int len);
-
 void _exit(int status) {
     _write(1, "exit", 4);
     while (1) {
