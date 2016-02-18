@@ -6,9 +6,7 @@
  * Partner: Bradely Vine
  * Last Modified: 02/18/2016
  * Part of: Lab5
- * 
-The original version of this code is posted at https://sites.google.com/site/stm32discovery/open-source-development-with-the-stm32-discovery/getting-newlib-to-work-with-stm32-and-code-sourcery-lite-eabi. This version was adapted to be used with the IUCS P44 lab.
-*/
+ */
 
 #include <errno.h>
 #include <sys/stat.h>

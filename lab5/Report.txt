@@ -1,0 +1,33 @@
+/*
+ * main.c
+ *
+ * Created on: 02/11/2016
+ * Author: Shichao Hu
+ * Partner: Bradely Vine
+ * Last Modified: 02/18/2016
+ * Part of: Lab5
+ *
+ */
+
+1. How many connections are required to communicate over UART?
+
+	The PC4 and PC5 pin should be connected, also two ground pins should be connected.	
+2. What is the purpose of "alternate functions" for GPIO pins?
+
+	The normal function refers to GPIO, the alternate function refers to other function like USART, Clock to control the pins.
+
+3. Define "baud rate" in your own words
+
+	It is the rate at which information is transferred in a communication channel. In our lab5, the baud rate is set to be 9600, which means the maximum bits that transferring is 9600 bits per second.
+
+4. Why do we need newlib_stubs? Specifically, is there a reson that printf won't work on the board without it?
+
+		
+
+5. Give an example of a situation in which the Salae Logic Analyzer is the best debugging method and include a screen shot of the Logic application.
+
+	
+
+6. What did you learn, any difficulties you had.
+
+	I learnd the way of using UART and set up the configuration for UART1. Also, we successfuly used the logic analyzer to send and receive characters. We had difficulties to figure out how to make the word count works at first, but then solved the problem during the lab.  
