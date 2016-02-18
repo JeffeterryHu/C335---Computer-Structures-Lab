@@ -22,11 +22,11 @@
 
 4. Why do we need newlib_stubs? Specifically, is there a reson that printf won't work on the board without it?
 
-		
+	Because the newlib_stubs would create a process and transfer the control to process, in this case, the printf will work.		
 
 5. Give an example of a situation in which the Salae Logic Analyzer is the best debugging method and include a screen shot of the Logic application.
 
-	
+	We had a Salae Logic Analyzer which can receive characters but won't show us the character we entered.
 
 6. What did you learn, any difficulties you had.
 
