@@ -1,29 +1,13 @@
-/* main.c --- 
- * 
- * Filename: main.c
- * Description: 
- * Author: 
- * Maintainer: 
- * Created: Thu Jan 10 11:23:43 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
- */
-
-/* Commentary: 
- * 
- * 
- * 
- */
-
-/* Change log:
- * 
- * 
- */
-/* Code: */
+/*
+ * main.c
+ *
+ * Created on: 02/11/2016
+ * Author: Shichao Hu
+ * Partner: Bradely Vine
+ * Last Modified: 02/18/2016
+ * Part of: Lab5
+ *
+ */	
 
 #include <f3d_uart.h>
 #include <stdio.h>
