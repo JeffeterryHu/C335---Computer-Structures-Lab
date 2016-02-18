@@ -5,7 +5,7 @@
  * Last Modified by: Shichao Hu
  * Date Last Modified: 1/21/2016
  * Assignment: my own word count
- * Part of: Lab2
+ * Part of: Lab5
  */
 
 //#include<stdlib.h>
