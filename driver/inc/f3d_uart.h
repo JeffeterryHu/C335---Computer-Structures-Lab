@@ -1,38 +1,15 @@
-/* f3d_uart.h --- 
- * 
- * Filename: f3d_uart.h
- * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Thu Sep 26 07:05:43 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
+/*
+ * f3d_uart.h
+ *
+ * Created on: 02/11/2016
+ * Author: Shichao Hu
+ * Partner: Bradely Vine
+ * Last Modified: 02/18/2016
+ * Part of: Lab5
+ *
  */
 
-/* Commentary: 
- * 
- * 
- * 
- */
 
-/* Change log:
- * 
- * 
- */
-
-/* Copyright (c) 2004-2007 The Trustees of Indiana University and 
- * Indiana University Research and Technology Corporation.  
- * 
- * All rights reserved. 
- * 
- * Additional copyrights may follow 
- */
-
-/* Code: */
 
 void f3d_uart_init(void);
 int putchar(int);
