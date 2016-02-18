@@ -83,13 +83,13 @@
 #define LCD_D HIGH
 
 #define BLACK 0x0000
-#define BLUE 0x001F
+#define BLUE 0xF800
+#define CYAN 0xFFE0
 #define GREEN 0x07E0
-#define CYAN 0x07FF
-#define RED 0xF800
 #define MAGENTA 0xF81F
-#define YELLOW 0xFFE0
+#define RED 0x001F
 #define WHITE 0xFFFF
+#define YELLOW 0x07FF
 
 void f3d_lcd_sd_interface_init(void);
 void f3d_lcd_init(void);
