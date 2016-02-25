@@ -19,7 +19,7 @@
 
 // delay function
 void delay(void){
-	int i = 1200000;
+	int i = 800000;
 	while(i-- > 0){
 		asm("nop");
 	}
@@ -94,45 +94,76 @@ int main(void){
 	//char ch;
 	//scanf("%c",&ch);
 
+	//ch = getchar();
+
 	while(example%4 == 1 /*|| ch == 'x'*/) {
 		f3d_gyro_getdata(Data); 
 	      	printf("X axis: %f\n", Data[0]);
 	      	delay();
 
+	if(Data[0] > 0 && Data[0] < 100){	
 		
 		if(Data[0] > 0 && Data[0] < 10){
 			f3d_led_on(0);
-		}else{
+			delay();
 			f3d_led_off(0);
 		}
 		
-		if(Data[0] > 10 && Data[0] < 20){
-			f3d_led_on(7);
-			//f3d_led_on(6);
-			//f3d_led_on(7);
-		}
-
-		if(Data[0] > 20 && Data[0] < 30){
-                        //f3d_led_on(4);
-			//f3d_led_on(5);
+		else if(Data[0] > 10 && Data[0] < 30){
+			f3d_led_on(5);
 			f3d_led_on(6);
-			//f3d_led_on(7);
-			//f3d_led_on(0);
-                }else{
-			f3d_led_all_off();
+			delay();
+			f3d_led_off(5);
+			f3d_led_off(6);
 		}
 
+		else{
+                        f3d_led_on(4);
+			f3d_led_on(5);
+			f3d_led_on(6);
+			f3d_led_on(7);
+			f3d_led_on(0);
+                	delay();
+			f3d_led_off(0);
+			f3d_led_off(4);
+			f3d_led_off(5);
+			f3d_led_off(6);
+			f3d_led_off(7);
+		}
+	}
 
-		/*
-		if(ch == 'x'){}
-		else if(ch == 'y'){
-			example--;
-		}
-		else if(ch == 'z'){
-			example -= 2;
-		}
-		else{}
-		*/		
+	if(Data[0] <= 0 && Data[0] > -100){
+		
+		if(Data[0] <= 0){
+                        f3d_led_on(2);
+                	delay();
+                        f3d_led_off(2);
+                }
+
+                else if(Data[0] < -30){
+                        f3d_led_on(1);
+                        f3d_led_on(3);
+                	delay();
+                        f3d_led_off(1);
+                        f3d_led_off(3);
+                }
+
+                else{
+                        f3d_led_on(0);
+                        f3d_led_on(1);
+                        f3d_led_on(2);
+                        f3d_led_on(3);
+                        f3d_led_on(4);
+                	delay();
+                        f3d_led_off(0);
+                        f3d_led_off(1);
+                        f3d_led_off(2);
+                        f3d_led_off(3);
+                        f3d_led_off(4);
+                }
+	}
+
+
 
 		if (user_btn_read()) {
 			example++;
