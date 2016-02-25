@@ -8,7 +8,7 @@
 
 // delay function
 void delay(void){
-	int i = 170000;
+	int i = 1800000;
 	while(i-- > 0){
 		asm("nop");
 	}
@@ -19,69 +19,56 @@ int main(void){
 
   //initializing button
   GPIO_InitTypeDef GPIO_InitStructure;
-  GPIO_StructInit(&GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+  int button_state;
+  int i=1;
+  float Data[3] = {0};
+  float eData[3] = {0};
+  int example = 0;
 
   f3d_uart_init();
   f3d_led_init();
+  f3d_gyro_init();
+  f3d_user_btn_init();
 
   setvbuf(stdin, NULL, _IONBF, 0);
   setvbuf(stdout, NULL, _IONBF, 0);
   setvbuf(stderr, NULL, _IONBF, 0);
 
-  f3d_gyro_init();
-  f3d_user_btn_init();
-  int button_state;
-  int i=1;
-  float Data[3] = {0};
-  float cData[3] = {0};
-  int any = 0;
-
-
-  float array[3] = {1.4, 1.2, 1.5}; 
+  printf("Angular Velocity Visualization Application\n");
+  printf("Press user button will start the app and change the axises showing.\n"); 
   
   while(1){
 
-  	button_state = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+  	button_state = user_btn_read();
+
 	if(button_state){
-		any++;
-		printf("%d\n",any);
+		example++;
+		printf("%d\n",example);
 		delay();
 	}
-
-	/*
-	while(button_state == 0){
-		
-  	f3d_gyro_getdata(array);
-	printf("%f %f %f", array[0], array[1], array[2]);
-	button_state = GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0);
-  	}
-	*/
 	
-	while(c%4 == 1) {
+	while(example%4 == 1) {
 		f3d_gyro_getdata(Data); 
 	      	printf("X axis: %f\n", Data[0]);
 	      	delay();
 		     
 		if (user_btn_read()) {
-			any++;
+			example++;
 			delay();
 			f3d_gyro_getdata(Data);
 		}
-
+		
+		/*
 		if(Data[0] > 5){
 			f3d_led_on(0);
-		} else {
+		}else{
 			f3d_led_off(0);
 		}
 
 		if(Data[0] >63){
 			f3d_led_on(1);
-		} else {
+		}else{
 			f3d_led_off(1);
 		}
 
@@ -120,21 +107,35 @@ int main(void){
 		}else{
 			f3d_led_off(5);
 		}
+
+		*/
 	}
 
-	while(c%4 == 2){
+	while(example%4 == 2){
 		f3d_gyro_getdata(Data);
 		printf("Y axis: %f\n", Data[1]);
 		delay();
+		
+		if(user_btn_read()){
+			example++;
+			delay();
+			f3d_gyro_getdata(Data);
+		}
 	}
 
-	while(c%4 == 3){
+	while(example%4 == 3){
 		f3d_gyro_getdata(Data);
 		printf("Z axis: %f\n", Data[2]);
 		delay();
+		
+		if(user_btn_read()){
+			example++;
+			delay();
+			f3d_gyro_getdata(Data);
+		}
 	}
+  }
 }
-
 void assert_failed(uint8_t* file, uint32_t line) {
 /* Infinite loop */
 /* Use GDB to find out why we're here */
