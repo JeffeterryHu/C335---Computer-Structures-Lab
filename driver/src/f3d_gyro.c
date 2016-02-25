@@ -1,9 +1,11 @@
 #include <f3d_gyro.h>
 #include <stm32f30x.h>
+
 void f3d_gyro_interface_init() {
   
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef SPI_InitStructure;
+  
   // Pin initialization
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
@@ -11,20 +13,20 @@ void f3d_gyro_interface_init() {
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-  // Initialization for the following:
-  //SCK PA5 
-  GPIO_PinAFConfig(GPIOC,5,GPIO_AF_5);
-  //MISO PA6
-  GPIO_PinAFConfig(GPIOC,6,GPIO_AF_5);
-  //MOSI PA7
-  GPIO_PinAFConfig(GPIOC,7,GPIO_AF_5);
-
-   
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE); // SCK, MOSI, MISO on PORTA
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE); // CS on port E
+
+  // Initialization for the following:
+  //SCK PA5 
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5,GPIO_AF_5);
+  //MISO PA6
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6,GPIO_AF_5);
+  //MOSI PA7
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7,GPIO_AF_5);
+
 
   //SPI Initialization and configuration
   SPI_I2S_DeInit(SPI1);
@@ -120,14 +122,14 @@ void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite
 	
 	if (NumByteToWrite > 0x01)
 	{
-		WriteAddr |= (uint8_t) (0x40);
+		WriteAddr |= (uint8_t) ((uint8_t) 0x40);
 	}
 	GYRO_CS_LOW();
 
 	f3d_gyro_sendbyte(WriteAddr);
 
 	while(NumByteToWrite >= 0x01){
-		f3d_gyro_sendbyte((*pBuffer);
+		f3d_gyro_sendbyte(*pBuffer);
     		NumByteToWrite--;
     		pBuffer++;
 	}

@@ -63,6 +63,7 @@ int getchar(void) {
 
 //sends a string
 void putstring(char *s) {
+  while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == (uint16_t)RESET);
   int i = 0;
   for( i; s[i] != '\0'; i++ ) { putchar(s[i]); }
 }
