@@ -11,6 +11,6 @@ OBJS=  $(STARTUP) main.o f3d_led.o f3d_uart.o stm32f30x_rcc.o stm32f30x_gpio.o s
 
 # include common make file
 
-include $(TEMPLATEROOT)/Makefile.common
+include $(TEMPLATEROOT)/c335.mk
 
 
