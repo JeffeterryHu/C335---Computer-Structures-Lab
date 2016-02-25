@@ -1,0 +1,27 @@
+report.txt
+author: Shichao Hu
+created: 2/18/2016
+last modified: 2/25/2016
+part of: lab6
+
+What does the CS pin do (the CS pin is called SS in the lab manual)?
+	to enable the device for communication
+
+Why do you set the CS high at the end of the pin initializations? 
+What other functions in f3d_gyro.c change CS from low to high or high to low?
+	if it is high, we can use the SCLK pin to communication
+	f3d_gyro_interface_init()
+	f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead)
+	f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite)	
+
+How do you hook up multiple peripherals on one SPI bus?
+	
+
+The STM has an Operating Frequency of 72 MHz. When initializing SPI1, what do you set the baud rate prescaler to? What is the resulting SPI clock frequency?
+	
+
+Does a peripheral (slave) need to be configured with the transmission speed before it can communicate with the microcontroler (master)? Why would you want to be able to do on-the-fly changes in transmission speed?
+	becuase it needs to communite with peripheral which has different tranmission speed
+
+Describe what you learned and any difficulties you had:
+	we had problems when we doing the user button input. If we get the button works, it only prints off one x axis, or y axis and it is still the problem we haven't solved. Also, light up the leds is a problem, we have if statements with the right logic, but the led light just does not light on as described.
