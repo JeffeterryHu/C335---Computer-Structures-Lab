@@ -30,7 +30,10 @@ int main(void) {
   setvbuf(stderr, NULL, _IONBF, 0);
   
   printf("wc is running");
-  mywc();
+  // while(1) {
+  //  putchar(getchar());
+  //}
+   mywc();
 
 }
 

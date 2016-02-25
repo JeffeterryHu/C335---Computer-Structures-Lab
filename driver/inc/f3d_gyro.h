@@ -1,4 +1,12 @@
 /* f3d_gyro.h */
+ 
+/* Author: Shichao Hu
+ * Partner: Broadmore Chang Tung
+ * Date Created: 2/18/2016
+ * Last Modified by: Shichao Hu
+ * Date Last Modified: 2/25/2016
+ * Part of: Lab6
+ */
 
 /* Code: */
 #include <stm32f30x.h>

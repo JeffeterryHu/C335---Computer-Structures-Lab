@@ -1,12 +1,30 @@
+/* f3d_gyro.c
+ *
+ * Author: Shichao Hu
+ * Partner: Broadmore Chang Tung
+ * Date Created: 2/18/2016
+ * Last Modified by: Shichao Hu
+ * Date Last Modified: 2/25/2016
+ * Part of: Lab6
+ */
+
 #include <f3d_gyro.h>
 #include <stm32f30x.h>
-
 void f3d_gyro_interface_init() {
   
   GPIO_InitTypeDef GPIO_InitStructure;
   SPI_InitTypeDef SPI_InitStructure;
+ 
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
   
-  // Pin initialization
+  //Initialization for SCK PA5, MISO PA6, MOSI PA7
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_5);
+  
+  //Pin initialization
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -14,19 +32,6 @@ void f3d_gyro_interface_init() {
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE); // SCK, MOSI, MISO on PORTA
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE); // CS on port E
-
-  // Initialization for the following:
-  //SCK PA5 
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5,GPIO_AF_5);
-  //MISO PA6
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6,GPIO_AF_5);
-  //MOSI PA7
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7,GPIO_AF_5);
-
 
   //SPI Initialization and configuration
   SPI_I2S_DeInit(SPI1);
@@ -42,8 +47,8 @@ void f3d_gyro_interface_init() {
   SPI_Init(SPI1, &SPI_InitStructure);
   SPI_RxFIFOThresholdConfig(SPI1, SPI_RxFIFOThreshold_QF);
   SPI_Cmd(SPI1, ENABLE);
-
-  // CS PE3
+  
+  // CS CE3
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -51,16 +56,15 @@ void f3d_gyro_interface_init() {
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-  // set the CS high
-  GPIO_SetBits(GPIOE,GPIO_Pin_3);
+  //set the CS high
+  GPIO_SetBits(GPIOE, GPIO_Pin_3);
+
 }
 
 //the init function to be called in your main.c
 void f3d_gyro_init(void) {
-  
   //
-  //SETTING THE CONTROL REGISTERS
-  
+  //SETTING THE CONTROL REGISTERS 
   f3d_gyro_interface_init();
   // CTRL1 Register 
   // Bit 7:6 Data Rate: Datarate 0
@@ -87,15 +91,13 @@ void f3d_gyro_init(void) {
 
 }
 
-  //to read from it
-
+//to read from it
 void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
   
   //are we reading one byte or more than one byte???
   if (NumByteToRead > 1) {
     ReadAddr |= (uint8_t)(0x80 | 0x40); // sets to multibyte mode
-  }
-  else {
+  } else {
     ReadAddr |= (uint8_t) (0x80); // sets to read mode (first bit 1)
   }
   
@@ -104,7 +106,6 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
   
   //sending address byte
   f3d_gyro_sendbyte(ReadAddr);  
-  
   while(NumByteToRead > 0x00) {
     //WE are now sending dummy data so we can read the valuable!
     //remember we must write to read!
@@ -117,34 +118,39 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
   GYRO_CS_HIGH();//setting chip select to high (DONE TALKING)
 }
 
-  /*writing function*/
+
+/*writing function*/
 void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite) {
-	
-	if (NumByteToWrite > 0x01)
-	{
-		WriteAddr |= (uint8_t) ((uint8_t) 0x40);
-	}
-	GYRO_CS_LOW();
 
-	f3d_gyro_sendbyte(WriteAddr);
+  if(NumByteToWrite > 0x01) {
+    WriteAddr |= (uint8_t) ((uint8_t) 0x40);
+  }
 
-	while(NumByteToWrite >= 0x01){
-		f3d_gyro_sendbyte(*pBuffer);
-    		NumByteToWrite--;
-    		pBuffer++;
-	}
-	GYRO_CS_HIGH();
+  GYRO_CS_LOW();
+
+  f3d_gyro_sendbyte(WriteAddr);
+  
+  while(NumByteToWrite >= 0x01) {
+    f3d_gyro_sendbyte(*pBuffer);
+    NumByteToWrite--;
+    pBuffer++;
+  } 
+  
+  GYRO_CS_HIGH();
 }
 
 /*sends the bytes*/
-static uint8_t f3d_gyro_sendbyte(uint8_t byte)
-{
-	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET); 
-	SPI_SendData8(SPI1, byte);
-	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
-	return (uint8_t)SPI_ReceiveData8(SPI1);
-}
+static uint8_t f3d_gyro_sendbyte(uint8_t byte) {
+  /*********************************************************/
+  /***********************CODE HERE ************************/
 
+  while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+  SPI_SendData8(SPI1, byte);
+  while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+  return (uint8_t)SPI_ReceiveData8(SPI1);
+  /********************** CODE HERE ************************/
+  /*********************************************************/
+}
 /*gets the data*/
 void f3d_gyro_getdata(float *pfData) {
   //
@@ -156,7 +162,6 @@ void f3d_gyro_getdata(float *pfData) {
   f3d_gyro_write(tmpbuffer,0x28,6);
   //Then we are going to read it
   f3d_gyro_read(tmpbuffer,0x28,6);
-
   //casting the data retreiving from tmpbuffer to raw data
   for(i=0; i<3; i++) {
     RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i+1] << 8) + tmpbuffer[2*i]);
