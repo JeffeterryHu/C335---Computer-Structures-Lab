@@ -29,9 +29,9 @@ void dada(int i) {
 
 
 void Write_Titles() {
-  f3d_lcd_drawString(30,20,"X Axis",BLUE,BLACK);
-  f3d_lcd_drawString(30,70,"Y Axis",GREEN,BLACK);
-  f3d_lcd_drawString(30,120,"Z Axis",RED,BLACK);
+  f3d_lcd_drawString(20,20,"X Axis: ",BLUE,BLACK);
+  f3d_lcd_drawString(20,70,"Y Axis: ",GREEN,BLACK);
+  f3d_lcd_drawString(20,120,"Z Axis: ",RED,BLACK);
 }
 
 int absvol(float f) {
@@ -84,40 +84,28 @@ int main(void) {
   //create tiles:
   
   
+  float x_axis = axis[0];
+  float y_axis = axis[1];
+  float z_axis = axis[2];
+
   int size = Int_Maker(x_axis);
   int counter = 0;
-  int counter_2 = 0;
+
   while(1) {
     f3d_gyro_getdata(axis);
-    float x_axis = axis[0];
-    float y_axis = axis[1];
-    float z_axis = axis[2];
 
-
-
-    dada(1000000);
+    //dada(1000000);
+    
     f3d_lcd_fillScreen(BLACK);
     Write_Titles();
     //                  V , X, Y, X,  Y //
-    f3d_lcd_OURGUY(BLUE,60,20,20,50+counter_2,50+counter_2);
-    f3d_lcd_OURGUY(BLUE,60,20,100,50+counter_2,50+counter_2);
-    f3d_lcd_OURGUY(BLUE,60,20,200,50+counter_2,50+counter_2);
+    f3d_lcd_OURGUY(BLUE,20,10,30,50+counter,50+counter);
+    f3d_lcd_OURGUY(BLUE,20,10,80,50+counter,50+counter);
+    f3d_lcd_OURGUY(BLUE,20,10,130,50+counter,50+counter);
+    printf("axis: %f\n",axis[0]);
     counter += 1;
-    counter_2 += 1;
-
-
-
-
-
-  }
-
-
-  }
-
-
-
-
-
+    }
+}
 
   
   //CODE IS BELOW
