@@ -1,0 +1,30 @@
+* report.txt
+*
+* Name: Shichao Hu
+* Partner: Nathan Krummen
+* Date Created: 2/25/2016
+* Date Last Modified: 3/3/2016
+* Part of: Lab7
+
+* We encounted some difficulties about how to print out the real-time axis on the LCD screen which turns out to be the sprintf() function solved the problem
+
+* Discuss the advantages and disadvantages of printf debugging? Note: there is no right answer to this, we are just looking for your thoughts on the issue
+
+	the printf debugging can display the outputs and compare to your expectations, this is the advantages
+	but compare to others way of debugging, printf debugging is really slow
+
+* Explain why the spiReadWrite function is called inside a higher level peripheral function (the lcdWrite function).
+
+	in order to communicate with LCD, we have to set the SPI connection first
+
+* Why does LCD_CS_DEASSERT() do? Why is it important?
+
+	this have the function of setting connection to HIGH
+
+* Explain how the character data from the ASCII array in glcdfont.c gets converted to pixels.
+
+	ASCII[c*5 + i], c is unsigned char, i has the value from 0 to 5
+
+* Give the exact timing difference between the two versions of f3d_lcd_fillScreen, from the Salae analyzer, and explain why the new function is faster.
+	
+	in the old fillScreen, the output is solid white block when the Brown line connected to PB13, and the new fillScreen has space among those vertical lines. The newer one is faster because it fills the color once per row rather than each pixel.

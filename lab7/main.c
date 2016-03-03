@@ -1,10 +1,20 @@
 /* main.c --- 
  * 
  * Filename: main.c
- * Description: 
- * Author: 
- * Maintainer: 
- * Created: Thu Jan 10 11:23:43 2013
+ * Description:
+
+Draw_Box(~) is our method that draws a box - height: 15, and width dependent on the int value passed. as int increases, box grows rightward on our screen.
+
+Int_Maker(~) turns a +/- float into a abs(int) from 0-100. So that the max width of our Draw_Box is only 100 (as to not overflow our guy). Remainder of process is defined step by step on our main guy.
+
+ * Author: Nathan Krummen
+ * Partner: Shichao Hu
+ * Date Created: 2/25/2016
+ * Date Last Modified: 3/3/2016
+ * Part of: Lab7
+ */
+
+
  /* Code: */
 
 
@@ -17,40 +27,30 @@
 #include <f3d_user_btn.h>
 #include <stdlib.h>
 
-
-
-
-
 void dada(int i) {
   while (i-- > 0) {
     asm("nop"); /* This stops it optimising code out */
   }
 }
 
-
-void Write_Titles() {
-  f3d_lcd_drawString(20,20,"X Axis: ",BLUE,BLACK);
-  f3d_lcd_drawString(20,70,"Y Axis: ",GREEN,BLACK);
-  f3d_lcd_drawString(20,120,"Z Axis: ",RED,BLACK);
+void Draw_Box(uint16_t color, int value, int start_x, int start_y) { //draws box relative to value passed.
+  int x;
+  int y;
+  for(y = start_y; y < start_y + 15; y++) {
+    for(x = start_x; x < start_x + value; x++) {
+      f3d_lcd_drawPixel(x,y,color);
+    }
+  }  
 }
 
-int absvol(float f) {
-  if(f< 0.0) {
-    f *= -1.0;
-  }
-  return f;
-  }
-
-
-
-int Int_Maker(float f) {
-  float v = absvol(f);
-  float k = 0.0;
+int Int_Maker(float f) { //turns our abs(axis float) into int between 0-100.
   int counter = 0;
+  float v = abs(f);
+  float k = 0.0; 
   while(v > k) {
-    k += 4.0;
+    k += 4.3;
     counter += 1;
-    if(counter > 100) {
+    if(counter > 99) {
       return counter;
     }
   }
@@ -71,62 +71,39 @@ int main(void) {
   f3d_gyro_init();
   f3d_led_init();
   
-  int i = 0;
-  float axis[3];
-  
-  
-  if(user_btn_read()) { //screen wash.
-    //f3d_lcd_fillScreen(BLACK);
-    //f3d_lcd_fillScreen(WHITE);
-    //f3d_lcd_fillScreen(BLACK);
-  }
-  
   //create tiles:
-  
-  
-  float x_axis = axis[0];
-  float y_axis = axis[1];
-  float z_axis = axis[2];
-
-  int size = Int_Maker(x_axis);
-  int counter = 0;
-
   while(1) {
-    f3d_gyro_getdata(axis);
-
-    //dada(1000000);
+    float axis[3];
+    f3d_gyro_getdata(axis); //Fills our axis with our 3 values.
+    //
     
-    f3d_lcd_fillScreen(BLACK);
-    Write_Titles();
-    //                  V , X, Y, X,  Y //
-    f3d_lcd_OURGUY(BLUE,20,10,30,50+counter,50+counter);
-    f3d_lcd_OURGUY(BLUE,20,10,80,50+counter,50+counter);
-    f3d_lcd_OURGUY(BLUE,20,10,130,50+counter,50+counter);
-    printf("axis: %f\n",axis[0]);
-    counter += 1;
-    }
-}
-
-  
-  //CODE IS BELOW
-  /*
-  float axis[3];
-  int button_counter = 0; //ranges from 0-6, reset at 6.
-  char sample[] = "SAMPLE";
-  while(button_counter == 0) {
-  f3d_gyro_getdata(axis); //We've filled axis with x,y,z, values from Gyro
+    //
+    int x_axis = Int_Maker(axis[0]);
+    int y_axis = Int_Maker(axis[1] - 1.4); //assigns each axis to Int value.
+    int z_axis = Int_Maker(axis[2]);
+    //
+    char buff1[50];
+    char buff2[50]; //create text buffer.
+    char buff3[50];
+    //
+    int reta = sprintf(buff1,"X axis: %4.2f",axis[0]);
+    int retb = sprintf(buff2,"Y axis: %4.2f",axis[1]-1.5); //fill said buffer.
+    int retc = sprintf(buff3,"Z axis: %4.2f",axis[2]);
+    //
+    f3d_lcd_drawString(10,20,buff1,RED,BLACK); //draw string for X
+    Draw_Box(RED,x_axis,10,30); //draw box - width by value
+    f3d_lcd_drawString(10,60,buff2,GREEN,BLACK); //draw string for Y
+    Draw_Box(GREEN,y_axis,10,70); //draw box
+    f3d_lcd_drawString(10,100,buff3,BLUE,BLACK); //draw string for Z
+    Draw_Box(BLUE,z_axis,10,110); //draw box
+    //dada(500000);
+    //
+    Draw_Box(BLACK,100,10,30);
+    Draw_Box(BLACK,100,10,70); //cleans the boxes - turning all previous pixels off.
+    Draw_Box(BLACK,100,10,110);
+    //
   }
-  //f3d_led_all_on();
-  //f3d_lcd_drawString(75,50,sample,RED,BLACK);
-  f3d_lcd_drawChar(100,100,'b',RED,BLUE);
-  */
-
-
-  //END CODE
-
- 
-
-
+  }
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t* file, uint32_t line) {
 /* Infinite loop */
