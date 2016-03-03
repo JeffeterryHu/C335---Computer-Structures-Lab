@@ -1,3 +1,13 @@
+
+/* main.c
+ *
+ * Name: Shichao Hu
+ * Partner: Nathan Krummen
+ * Date Created: 2/25/2016
+ * Date Last Modified: 3/3/2016
+ * Part of: Lab7
+ */	 
+
 /*
 
 Nathan Krummen
