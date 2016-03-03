@@ -1,16 +1,11 @@
 /* f3d_lcd_sd.c --- 
  * 
- * Filename: f3d_lcd_sd.c
- * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Thu Oct 24 05:18:36 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
+ * Name: Shichao Hu
+ * Partner: Nathan Krummen
+ * Date Created: 2/25/2016
+ * Date Last Modified: 3/3/2016
+ * Part of: Lab7
+ *
  */
 
 /* Commentary: 
