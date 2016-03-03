@@ -9,6 +9,7 @@ ASFLAGS = -g
 
 OBJS=  $(STARTUP) 	main.o\
 			f3d_led.o \
+			f3d_user_btn.o \
 			f3d_uart.o \
 			f3d_gyro.o \
 			f3d_delay.o \
@@ -24,5 +25,4 @@ OBJS=  $(STARTUP) 	main.o\
 # include common make file
 
 include $(TEMPLATEROOT)/c335.mk
-
 
