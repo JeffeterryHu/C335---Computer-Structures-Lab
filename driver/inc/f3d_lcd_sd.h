@@ -92,7 +92,7 @@
 #define YELLOW 0x07FF
 
 void f3d_lcd_sd_interface_init(void);
-void f3d_lcd_init(void);
+void f3d_lcd_init(void); //we found it here.
 void f3d_lcd_setAddrWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t madctl);
 void f3d_lcd_pushColor(uint16_t *color,int cnt);
 static void f3d_lcd_writeCmd(uint8_t);

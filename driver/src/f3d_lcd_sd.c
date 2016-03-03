@@ -41,7 +41,40 @@ static uint8_t madctlcurrent = MADVAL(MADCTLGRAPHICS);
 
 void f3d_lcd_sd_interface_init(void) {
  /* vvvvvvvvvvv pin initialization for the LCD goes here vvvvvvvvvv*/ 
+  GPIO_InitTypeDef GPIO_InitStructure;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15; //only 13-15.
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF; //13-15 are Mode_AF
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB,&GPIO_InitStructure);
   
+  //SCK PA5
+  GPIO_PinAFConfig(GPIOB,13,GPIO_AF_5);
+
+  //MOSI PA6 
+  GPIO_PinAFConfig(GPIOB,14,GPIO_AF_5); //We don't know if AF_5 is correct//
+  
+  //MISO PA7
+  GPIO_PinAFConfig(GPIOB,15,GPIO_AF_5);
+
+  //CS PE3
+  GPIO_InitTypeDef GPIO_InitStructure_1;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+  GPIO_StructInit(&GPIO_InitStructure_1); //InitStructure_1? Since SPI2, does it need to be _2?
+  GPIO_InitStructure_1.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure_1.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure_1.GPIO_Mode = GPIO_Mode_OUT; //9-12 are Mode_Out
+  GPIO_InitStructure_1.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure_1.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB,&GPIO_InitStructure_1); //same as above, _2?
+
+
+  
+  //set the CS high
+  GPIO_SetBits(GPIOB, GPIO_Pin_12);
   
   
   
@@ -60,9 +93,9 @@ void f3d_lcd_sd_interface_init(void) {
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_Init(/*something goes here*/, &SPI_InitStructure);
-  SPI_RxFIFOThresholdConfig(/*somthing goes here*/, SPI_RxFIFOThreshold_QF);
-  SPI_Cmd(/*something goes here*/, ENABLE);
+  SPI_Init(SPI2, &SPI_InitStructure);
+  SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF);
+  SPI_Cmd(SPI2, ENABLE);
   
 } 
 
@@ -127,7 +160,7 @@ static const struct lcd_cmdBuf initializers[] = {
 
 void f3d_lcd_init(void) {
   const struct lcd_cmdBuf *cmd;
-
+  
   f3d_lcd_sd_interface_init();    // Setup SPI2 Link and configure GPIO pins
   LCD_BKL_ON();                   // Enable Backlight
 
@@ -240,6 +273,14 @@ void f3d_lcd_pushColor(uint16_t *color,int cnt) {
 static void f3d_lcd_writeCmd(uint8_t c) {
   LcdWrite(LCD_C,&c,1);
 }
+//ADDED CODE HERE
+int get_height() {
+  return ST7735_height;
+}
+int get_width() {
+  return ST7735_width;
+}
+//END ADDED CODE
 
 void f3d_lcd_fillScreen(uint16_t color) {
   uint8_t x,y;
@@ -250,6 +291,39 @@ void f3d_lcd_fillScreen(uint16_t color) {
     }
   }
 }
+
+//THIS IS OUR COPIED FUNCTION FOR FILLSCREEN2:
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~look right here~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ */
+void f3d_lcd_OURGUY(uint16_t color,int value, int top_left_x, int top_left_y, int bottom_right_x, int bottom_right_y) {
+  uint8_t x,y;
+  f3d_lcd_setAddrWindow(top_left_x,top_left_y,bottom_right_x,bottom_right_y,MADCTLGRAPHICS);
+  for(x=0; x < value; x++) {
+    for(y=0; y < 30; y++) {
+      f3d_lcd_pushColor(&color,1);
+    }
+  }
+}
+
+void f3d_lcd_fillScreen2(uint16_t color, int a, int b, int c, int d) { //a = height, b = width. c = starting height, d = starting width.
+  uint8_t y;
+  uint16_t x[ST7735_width];
+  for (y = c; y < a; y++) x[y] = color;
+  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
+  for (y=d;y < b; y++) {
+    f3d_lcd_pushColor(x,ST7735_width);
+  }
+}
+
+//END OF COPY
 
 void f3d_lcd_drawPixel(uint8_t x, uint8_t y, uint16_t color) {
   if ((x >= ST7735_width) || (y >= ST7735_height)) return;
