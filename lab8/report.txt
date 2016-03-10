@@ -1,0 +1,62 @@
+Lab8
+report.txt
+Shichao Hu
+Partner: Robert
+
+
+Q1) The accelerometer/magnetometer has pre-wired on the STM board.
+
+Totally it has 14 pins, and voltage required is 2.5
+
+
+Pin# Name Function
+1 Vdd_IO Power supply for I/O pins
+2 SCL Signal interface I 2 C serial clock (SCL)
+3 SDA Signal interface I 2 C serial data (SDA)
+4 INT2 Inertial Interrupt 2
+5 INT1 Inertial Interrupt 1
+6 C1 Reserved capacitor connection (C1)
+7 GND 0 V supply
+8 Reserved Leave unconnected
+9 DRDY Data ready
+10 Reserved Connect to GND
+11 Reserved Connect to GND
+12 SETP S/R capacitor connection (C2)
+13 SETC S/R capacitor connection (C2)
+14 Vdd Power supply
+
+the Accelerometer is on the left of the audio amplifier below the user-USB and above the pins
+
+Q2) 
+
+First thing to do is enabling the axis and adress of input data. Then convert the data into heading(the name we call). Also, the sensor has to be on in order to read the data. 
+
+
+Q3) What do the following lines of code do? (it is only necessary to explain the accelerometer)
+
+/*f3d_accel.c*/
+for (i=0; i<3; i++) {
+  raw_data[i]=((int16_t)((uint16_t)buffer[2*i+1] << 8) + buffer[2*i])/(uint8_t)16;
+  accel_data[i]=(float)raw_data[i]/1000.0;
+}
+
+
+It edits the array of raw_data, then change that data in the accel_data float array.
+
+The raw_data array will be change the format to int and shifts the bits out of a buffer index location and divides by 16. Finaly we can get the correct type size. 
+
+
+Q4.) Why might it be necessary to tilt compensate your compass computation?
+
+Because the accelerometer measurements cannot distinguish earth’s gravity from linear
+acceleration or angular acceleration, fast motion causes pitch/roll calculation error which
+then directly introduces an error to the heading calculation. In most cases, the fast motion
+doesn't last long and the device goes back to a stationary position. So the heading accuracy
+in an electronic compass means static accuracy when the device is still or without
+acceleration.(get this from one of the materials provided in lab8)
+
+
+Difficulties: 
+
+We had difficulties on visualization of the sensor, and then visualization of compass. First, we divide 360 degress into 8 parts and find out that is not accurate. Then we use 360 + 22.5 then divide by 45 to get a more accurate data and indication.
+
