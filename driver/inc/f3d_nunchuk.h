@@ -1,7 +1,6 @@
 /* f3d_nunchuk.h --- 
  * 
  * Filename: f3d_nunchuk.h
- * Description: 
  * Author: Bryce Himebaugh
  * Maintainer: 
  * Created: Thu Oct 31 09:41:40 2013
