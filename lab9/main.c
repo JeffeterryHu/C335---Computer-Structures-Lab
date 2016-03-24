@@ -275,7 +275,6 @@ int main(void) {
       if(circle[1] > 150) circle[1] = 150;
       if(circle[1] < 10) circle[1] = 10;
       f3d_lcd_drawCircle(circle[0], circle[1], 10, BLACK);
-      //f3d_delay_uS(75);
       delay(33);
       break;
 
@@ -296,9 +295,8 @@ int main(void) {
     
     case NUNCHUK:
         
-      f3d_lcd_setAddrWindow(64, 80, 64+4, 80+4, MADCTLGRAPHICS);
-      f3d_lcd_pushColor(colors3, 25); 
-
+      //f3d_lcd_setAddrWindow(64, 80, 64+4, 80+4, MADCTLGRAPHICS);
+      //f3d_lcd_pushColor(colors3, 25); 
 
       x0 = 64+(nunchuk_roll*35)   ;
       y0 = 80+(nunchuk_pitch*43)  ;    
