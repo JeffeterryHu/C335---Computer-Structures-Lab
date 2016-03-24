@@ -1,4 +1,4 @@
-main.o: main.c \
+f3d_gyro.o: ../driver/src/f3d_gyro.c ../driver/inc/f3d_gyro.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/stm32f30x.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Include/core_cm4.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Include/core_cmInstr.h \
@@ -27,8 +27,4 @@ main.o: main.c \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_tim.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_usart.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_wwdg.h \
- /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_misc.h \
- ../driver/inc/f3d_uart.h ../driver/inc/f3d_user_btn.h \
- ../driver/inc/f3d_lcd_sd.h ../driver/inc/f3d_i2c.h \
- ../driver/inc/f3d_accel.h ../driver/inc/f3d_mag.h \
- ../driver/inc/f3d_led.h
+ /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_misc.h

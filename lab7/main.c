@@ -70,7 +70,7 @@ int main(void) {
 
   f3d_gyro_init();
   f3d_led_init();
-  
+  f3d_lcd_fillScreen2(WHITE); 
   //create tiles:
   while(1) {
     float axis[3];
@@ -90,11 +90,11 @@ int main(void) {
     int retb = sprintf(buff2,"Y axis: %4.2f",axis[1]-1.5); //fill said buffer.
     int retc = sprintf(buff3,"Z axis: %4.2f",axis[2]);
     //
-    f3d_lcd_drawString(10,20,buff1,RED,BLACK); //draw string for X
+    f3d_lcd_drawStringH(10,20,buff1,RED,BLACK); //draw string for X
     Draw_Box(RED,x_axis,10,30); //draw box - width by value
-    f3d_lcd_drawString(10,60,buff2,GREEN,BLACK); //draw string for Y
+    f3d_lcd_drawStringH(10,60,buff2,GREEN,BLACK); //draw string for Y
     Draw_Box(GREEN,y_axis,10,70); //draw box
-    f3d_lcd_drawString(10,100,buff3,BLUE,BLACK); //draw string for Z
+    f3d_lcd_drawStringH(10,100,buff3,BLUE,BLACK); //draw string for Z
     Draw_Box(BLUE,z_axis,10,110); //draw box
     //dada(500000);
     //

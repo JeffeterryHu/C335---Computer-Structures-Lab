@@ -20,6 +20,8 @@ OBJS=  $(STARTUP) 	main.o \
 			f3d_user_btn.o \
 			glcdfont.o \
 			f3d_uart.o \
+			f3d_gyro.o \
+			f3d_led.o \
 			f3d_accel.o \
 			f3d_i2c.o \
 			f3d_mag.o \
