@@ -1,0 +1,347 @@
+> arm-none-eabi-gdb lab9_debug.elf 
+GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-linux-gnu --target=arm-none-eabi".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf...done.
+(gdb) target extended-remote :4242
+Remote debugging using :4242
+Reset_Handler () at ../startup_stm32f30x.c:21
+21	      void Reset_Handler(void) {
+(gdb) load
+Loading section .text, size 0xc678 lma 0x8000000
+Loading section .init, size 0xc lma 0x800c678
+Loading section .fini, size 0xc lma 0x800c684
+Loading section .eh_frame, size 0x4 lma 0x800c690
+Loading section .ARM.exidx, size 0x8 lma 0x800c694
+Loading section .data, size 0x88c lma 0x800c69c
+Loading section .init_array, size 0x4 lma 0x800cf28
+Loading section .fini_array, size 0x4 lma 0x800cf2c
+Loading section .jcr, size 0x4 lma 0x800cf30
+Loading section .init_array.00000, size 0x4 lma 0x800cf34
+Start address 0x8000220, load size 53048
+Transfer rate: 10 KB/sec, 4080 bytes/write.
+(gdb) b main
+Breakpoint 1 at 0x8000470: file main.c, line 35.
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+Note: automatically using hardware breakpoints for read-only addresses.
+main () at main.c:35
+35   int main(void) { 
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) n
+Program not restarted.
+(gdb) n
+36      setvbuf(stdin, NULL, _IONBF, 0);
+(gdb) n
+37      setvbuf(stdout, NULL, _IONBF, 0);
+(gdb) n
+38      setvbuf(stderr, NULL, _IONBF, 0);
+(gdb) n
+40      f3d_uart_init();
+(gdb) n
+42      printf("Reset\n");
+(gdb) n
+48      encryptStr(xPhrase, xKey, xNcrypt); //encrypt the phrase
+(gdb) n
+^C
+Program received signal SIGTRAP, Trace/breakpoint trap.
+default_handler () at ../startup_stm32f30x.c:7
+7		void default_handler (void) { while(1); }
+(gdb) q
+A debugging session is active.
+
+  Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) y
+
+#10 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
+> arm-none-eabi-gdb lab9_debug.elf 
+GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-linux-gnu --target=arm-none-eabi".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf...done.
+(gdb) target extended-remote :4242
+Remote debugging using :4242
+0x00000000 in ?? ()
+(gdb) target extended-remote :4242
+A program is being debugged already.  Kill it? (y or n) y
+Remote connection closed
+(gdb) Q
+
+#11 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
+> arm-none-eabi-gdb lab9_debug.elf 
+GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-linux-gnu --target=arm-none-eabi".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf...done.
+(gdb) target extended-remote :4242
+Remote debugging using :4242
+Reset_Handler () at ../startup_stm32f30x.c:21
+21	      void Reset_Handler(void) {
+(gdb) b main
+Breakpoint 1 at 0x8000470: file main.c, line 35.
+(gdb) load
+Loading section .text, size 0xc678 lma 0x8000000
+Loading section .init, size 0xc lma 0x800c678
+Loading section .fini, size 0xc lma 0x800c684
+Loading section .eh_frame, size 0x4 lma 0x800c690
+Loading section .ARM.exidx, size 0x8 lma 0x800c694
+Loading section .data, size 0x88c lma 0x800c69c
+Loading section .init_array, size 0x4 lma 0x800cf28
+Loading section .fini_array, size 0x4 lma 0x800cf2c
+Loading section .jcr, size 0x4 lma 0x800cf30
+Loading section .init_array.00000, size 0x4 lma 0x800cf34
+Start address 0x8000220, load size 53048
+Transfer rate: 10 KB/sec, 4080 bytes/write.
+(gdb) n
+Note: automatically using hardware breakpoints for read-only addresses.
+30        while (dst < &_edata)
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+
+Breakpoint 1, main () at main.c:35
+35	   int main(void) { 
+(gdb) n
+36      setvbuf(stdin, NULL, _IONBF, 0);
+(gdb) n
+37      setvbuf(stdout, NULL, _IONBF, 0);
+(gdb) n
+38      setvbuf(stderr, NULL, _IONBF, 0);
+(gdb) n
+40      f3d_uart_init();
+(gdb) n
+42      printf("Reset\n");
+(gdb) n
+48      encryptStr(xPhrase, xKey, xNcrypt); //encrypt the phrase
+(gdb) n
+Remote connection closed
+(gdb) Q
+
+#12 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
+> arm-none-eabi-gdb lab9_debug.elf 
+GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-linux-gnu --target=arm-none-eabi".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf...done.
+(gdb) target extended-remote :4242
+Remote debugging using :4242
+Reset_Handler () at ../startup_stm32f30x.c:21
+21	      void Reset_Handler(void) {
+(gdb) b main
+Breakpoint 1 at 0x8000464: file main.c, line 35.
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+Note: automatically using hardware breakpoints for read-only addresses.
+
+
+^Cdefault_handler () at ../startup_stm32f30x.c:7
+7		  void default_handler (void) { while(1); }
+(gdb) load
+Loading section .text, size 0xc668 lma 0x8000000
+Loading section .init, size 0xc lma 0x800c668
+Loading section .fini, size 0xc lma 0x800c674
+Loading section .eh_frame, size 0x4 lma 0x800c680
+Loading section .ARM.exidx, size 0x8 lma 0x800c684
+Loading section .data, size 0x88c lma 0x800c68c
+Loading section .init_array, size 0x4 lma 0x800cf18
+Loading section .fini_array, size 0x4 lma 0x800cf1c
+Loading section .jcr, size 0x4 lma 0x800cf20
+Loading section .init_array.00000, size 0x4 lma 0x800cf24
+Start address 0x8000220, load size 53032
+Transfer rate: 10 KB/sec, 4079 bytes/write.
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+main () at main.c:35
+35   int main(void) { 
+(gdb) n
+36      setvbuf(stdin, NULL, _IONBF, 0);
+(gdb) n
+37      setvbuf(stdout, NULL, _IONBF, 0);
+(gdb) n
+38      setvbuf(stderr, NULL, _IONBF, 0);
+(gdb) n
+40      f3d_uart_init();
+(gdb) n
+42      printf("Reset\n");
+(gdb) n
+48      encryptStr(xPhrase, xKey, xNcrypt); //encrypt the phrase
+(gdb) n
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+Reset_Handler () at ../startup_stm32f30x.c:21
+21	      void Reset_Handler(void) {
+(gdb) n
+30        while (dst < &_edata)
+(gdb) n
+31          *(dst++) = *(src++);
+(gdb) n
+30        while (dst < &_edata)
+(gdb) n
+30        while (dst < &_edata)
+(gdb) n
+30        while (dst < &_edata)
+(gdb) n
+30        while (dst < &_edata)
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+
+Breakpoint 1, main () at main.c:35
+35	   int main(void) { 
+(gdb) n
+36      setvbuf(stdin, NULL, _IONBF, 0);
+(gdb) n
+37      setvbuf(stdout, NULL, _IONBF, 0);
+(gdb) n
+38      setvbuf(stderr, NULL, _IONBF, 0);
+(gdb) n
+40      f3d_uart_init();
+(gdb) n
+42      printf("Reset\n");
+(gdb) n
+48      encryptStr(xPhrase, xKey, xNcrypt); //encrypt the phrase
+(gdb) cont
+Continuing.
+^C
+Program received signal SIGTRAP, Trace/breakpoint trap.
+default_handler () at ../startup_stm32f30x.c:7
+7		void default_handler (void) { while(1); }
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug/lab9_debug.elf 
+
+Breakpoint 1, main () at main.c:35
+35	   int main(void) { 
+(gdb) b 47
+Breakpoint 2 at 0x800049e: file main.c, line 47.
+(gdb) cont
+Continuing.
+
+Breakpoint 2, main () at main.c:48
+48	     encryptStr(xPhrase, xKey, xNcrypt); //encrypt the phrase
+(gdb) info r
+r0             0xa	10
+r1             0xa	10
+r2             0x1	1
+r3             0x0	0
+r4             0x20000478	536872056
+r5             0x0		0
+r6             0x0		0
+r7             0x0		0
+r8             0x0		0
+r9             0x0		0
+r10            0x0		0
+r11            0x0		0
+r12            0x1010101	16843009
+sp             0x20009fe8	0x20009fe8
+lr             0x800061d	134219293
+pc             0x800049e	0x800049e <main+58>
+cpsr           0x61000000	1627389952
+(gdb) p i
+No symbol "i" in current context.
+(gdb) b 63
+Breakpoint 3 at 0x800042e: file main.c, line 63.
+(gdb) cont
+Continuing.
+
+Breakpoint 3, encryptStr (phrase=phrase@entry=0x800c27c "cow", 
+    key=key@entry=0x800c280 "PIG", ncrypt=ncrypt@entry=0x20009fec "3&0")
+    at main.c:63
+63  ) { 
+(gdb) p i
+$1 = 0
+(gdb) n
+64     XOR
+(gdb) p key
+$2 = 0x800c280 "PIG"
+(gdb) p phrase
+$3 = 0x800c27c "cow"
+(gdb) p ncrypt
+$4 = 0x20009fec "3&0"
+(gdb) info r
+r0             0x3	3
+r1             0x800c281	134267521
+r2             0x50		80
+r3             0x0		0
+r4             0x33		51
+r5             0x3		3
+r6             0x800c27c	134267516
+r7             0x20009fec	536911852
+r8             0x800c280	134267520
+r9             0x0		0
+r10            0x0		0
+r11            0x0		0
+r12            0x1010101	16843009
+sp             0x20009fd0	0x20009fd0
+lr             0x8000425	134218789
+pc             0x8000436	0x8000436 <encryptStr+34>
+cpsr           0x1000000	16777216
+(gdb) n
+62      //for loop should be (i = 0; i < phrase; i++)
+(gdb) n
+
+Breakpoint 3, encryptStr (phrase=0x800c27d "ow", phrase@entry=0x800c27c "cow", 
+    key=0x800c281 "IG", key@entry=0x800c280 "PIG", 
+    ncrypt=ncrypt@entry=0x20009fec "3&0") at main.c:63
+63  ) { 
+(gdb) n
+64     XOR
+(gdb) n
+62      //for loop should be (i = 0; i < phrase; i++)
+(gdb) n
+
+Breakpoint 3, encryptStr (phrase=0x800c27e "w", phrase@entry=0x800c27c "cow", 
+    key=0x800c282 "G", key@entry=0x800c280 "PIG", 
+    ncrypt=ncrypt@entry=0x20009fec "3&0") at main.c:63
+63  ) { 
+(gdb) n
+64     XOR
+(gdb) n
+65    0) {
+(gdb) n
+62      //for loop should be (i = 0; i < phrase; i++)
+(gdb) n
+default_handler () at ../startup_stm32f30x.c:7
+7		void default_handler (void) { while(1); }
+(gdb) $
