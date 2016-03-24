@@ -1,12 +1,8 @@
-#  Summary:
-#  These rules allow for the creation of all functions
-#  
-#    Author: Austin Hollett
-#    Partners: Jinbao Xiao
-#    Date Created: March 3, 20163
-#    Last Modified By: Austin Hollett
-#    Date Last Modified: March 8, 2016
-#    Assignment: Lab8
+#    Author: Shichao Hu
+#    Date Created: March 20, 2016
+#    Last Modified By: Shichao Hu
+#    Date Last Modified: March 23, 2016
+#    Assignment: Lab9
 #    Part of: Makefile
 
 TEMPLATEROOT = ..

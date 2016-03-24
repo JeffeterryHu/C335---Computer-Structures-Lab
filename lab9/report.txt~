@@ -1,0 +1,5 @@
+Lab9 Report
+Author: Shichao Hu
+Created: 3/20/2016
+
+Q1: In previous labs, adding a peripheral has required pin initializations. Why were able to add the nunchuk without initializing anything?

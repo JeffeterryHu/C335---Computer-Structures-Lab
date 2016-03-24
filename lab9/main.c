@@ -1,28 +1,14 @@
-/* main.c ---
-*
-* Filename: main.c
-* Description:
-* Author: 
-* Maintainer:
-* Created: Thu Jan 10 11:23:43 2013
-/* Code: */
-
 /*
   main.c
-
-  Summary:
-  These definitions init a compass heading and a tilt graph via a ball.
-  
-    Author: Austin Hollett
-    Partners: Jinbao Xiao
-    Date Created: March , 20163
-    Last Modified By: Austin Hollett
-    Date Last Modified: March 8, 2016
-    Assignment: Lab8
-    Part of: Compass heading and tilt
+ 
+  Author: Shichao Hu
+  Date Created: March 20, 2016
+  Last Modified By: Shichao Hu
+  Date Last Modified: March 23, 2016
+  Assignment: Lab9
 */
 
-#include <stm32f30x.h> // Pull in include files for F30x standard drivers
+#include <stm32f30x.h> 
 #include <f3d_uart.h>
 #include <f3d_user_btn.h>
 #include <f3d_lcd_sd.h>
@@ -86,8 +72,8 @@ int main(void) {
     if(user_btn_read()) {
       while(user_btn_read());
       mode = ++mode % 2;
-      f3d_lcd_fillScreen2(WHITE);        
-    }
+      f3d_lcd_fillScreen2(WHITE);
+    }    
     switch(mode){
     case COMPASS:
       f3d_mag_read(magData);

@@ -1,0 +1,41 @@
+Lab9 Report
+Author: Shichao Hu
+Created: 3/20/2016
+
+Q1: In previous labs, adding a peripheral has required pin initializations. Why were able to add the nunchuk without initializing anything?
+
+Q2: What are the major differences between these two functions and what does that imply about communicating with the nunchuk?
+
+Q3: What do all of these variables correspond to in the nunchuk?
+    
+    typedef struct nunchuk_data { 
+    	    unsigned char jx;
+    	    unsigned char jy;
+    	    unsigned short ax;
+    	    unsigned short ay;
+    	    unsigned short az;
+    	    unsigned char c;
+    	    unsigned char z;
+    } nunchuk_t; 
+
+Q4: Explain the code
+
+    //from f3d_nunchuk_read
+    switch (data[5] & 0x03) {
+    	   case 2:
+    	   	n->z = 1;
+    		n->c = 0;
+    		break;
+    	   case 1:
+    	   	n->z = 0;
+    		n->c = 1;
+    		break;
+    	   case 0:
+    	   	n->z = 1;
+    		n->c = 1;
+    		break;
+	   case 3:
+    	   	n->z = 0;
+    		n->c = 0;
+    		break;
+    }
