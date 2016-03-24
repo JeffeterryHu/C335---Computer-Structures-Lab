@@ -64,7 +64,7 @@ A debugging session is active.
 
 Quit anyway? (y or n) y
 
-#10 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
+
 > arm-none-eabi-gdb lab9_debug.elf 
 GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
 Copyright (C) 2013 Free Software Foundation, Inc.
@@ -84,7 +84,7 @@ A program is being debugged already.  Kill it? (y or n) y
 Remote connection closed
 (gdb) Q
 
-#11 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
+
 > arm-none-eabi-gdb lab9_debug.elf 
 GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
 Copyright (C) 2013 Free Software Foundation, Inc.
@@ -142,7 +142,6 @@ Breakpoint 1, main () at main.c:35
 Remote connection closed
 (gdb) Q
 
-#12 jinxiao @ gabbro: /nfs/nfs4/home/jinxiao/cs/c335/lab9_debug 
 > arm-none-eabi-gdb lab9_debug.elf 
 GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140529-cvs
 Copyright (C) 2013 Free Software Foundation, Inc.

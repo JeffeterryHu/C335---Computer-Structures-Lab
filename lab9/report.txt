@@ -4,7 +4,11 @@ Created: 3/20/2016
 
 Q1: In previous labs, adding a peripheral has required pin initializations. Why were able to add the nunchuk without initializing anything?
 
+	because I2C has been initialized in the lab before
+
 Q2: What are the major differences between these two functions and what does that imply about communicating with the nunchuk?
+
+    the read function has specified either one byte or multiple bytes would be accepted, but the read function does not say that
 
 Q3: What do all of these variables correspond to in the nunchuk?
     
@@ -17,6 +21,8 @@ Q3: What do all of these variables correspond to in the nunchuk?
     	    unsigned char c;
     	    unsigned char z;
     } nunchuk_t; 
+
+	it represents the direction of joystick on nunchuk, the x, y, z axis of nunchuk, and also the c & z buttons
 
 Q4: Explain the code
 
@@ -39,3 +45,11 @@ Q4: Explain the code
     		n->c = 0;
     		break;
     }
+
+	this function will read the data from nunchuk, and giving different cases with different buttons being pressed.
+
+Q5: difficulties and what learned
+
+    at first, I can use user button to change the graphical display with every push, but got stuck at using the nunchuk controlls the display. Also, missing some .o files in Makefile wasted me some time.
+
+    another difficulty is figuring out the correct range for nunchuk buttons and hence I can use the correct logic to use nunchuk buttons control the graphical display.
