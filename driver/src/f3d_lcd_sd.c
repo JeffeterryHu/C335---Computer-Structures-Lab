@@ -102,6 +102,13 @@ void f3d_lcd_sd_interface_init(void) {
   SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF); //changed comment to SPI2
   SPI_Cmd(SPI2, ENABLE); //changed comment to SPI2
   
+  //SD card
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
 }
 
 

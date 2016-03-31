@@ -1,0 +1,37 @@
+Report.txt
+Lab10
+Shichao Hu
+	
+Q1.) What are we doing here and how does it relate to what we know about SPI?
+
+     SD_CS_HIGH() : Deselect SD Card, Chip Select pin high
+     SD_CS_LOW() : Select SD Card, Chip Select pin low
+
+Q2.) Explain how you might use the *f3d_delay_uS()* function
+     within the *delay()* function to replace the delay loop
+     below. What would you expect to be the advantage of using a
+     timer over a delay loop?
+
+     When we using the delay function, the board will do nothing at the time.
+     But with delay loop, the machine is working all time but display nothing.
+     In this case, we can save some time by using the delay function.
+
+Q3.) Read chapter 12 in the lab manual which covers DMA (direct memory access). 
+     Why might DMA be important in improving the performance of your image display application?
+
+     With DMA, we can boost up the transferring rate from 50000 pixels/second to 735000 pixels/second, so this will save a lot of time when reading a data sector from an SD card.
+     
+     Also, the DMA device can read from memory over the memory bus and write to a peripheral over the peripheral bus.
+
+Q4.) Research the FAT file system and describe the function of the file allocation table. 
+     Explain how the corruption of an entry in the table can cause part of a file to be lost.
+
+Q5.) What is the difference between FAT16 and FAT32?
+
+
+Difficulties and things learned:
+
+     We used the drawPixel function at first and finished the program, but the reading rate is really slow since we are drawing the pic pixel by pixel.
+     Thus, we improved the application with pushColor function. At this time, we had problems with colorArray which stores the picture color, and also stuck at converting the color from pixelArray to colorArray.
+     One problem we had is the color of the pic, when we first prints the pic, the color is essentially blue for everthing, later we figured out the rgb order matters in the struct bmppixel.
+     
