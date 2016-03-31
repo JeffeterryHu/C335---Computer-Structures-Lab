@@ -42,6 +42,8 @@
 volatile int systick_flag = 0;
 
 void f3d_systick_init(void) {
+  // this call would produce generate 100 interrupts per second
+  SysTick_Config(SystemCoreClock/100);
 }
 
 void SysTick_Handler(void) {
