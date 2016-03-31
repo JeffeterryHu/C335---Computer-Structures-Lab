@@ -21,7 +21,6 @@
 #include <ff.h>
 #include <diskio.h>
 #include <stdio.h>
-#include <fcntl.h>
 
 #define rgb(r, g, b) (((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3))
 

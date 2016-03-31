@@ -18,8 +18,8 @@ OBJS=  $(STARTUP) 	main.o \
 			f3d_accel.o \
 			f3d_mag.o \
 			f3d_nunchuk.o \
-			f3d_rtc.o \
 			f3d_user_btn.o \
+			f3d_rtc.o \
 			f3d_systick.o \
 			f3d_timer2.o \
 			f3d_dac.o \
