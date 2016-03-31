@@ -18,8 +18,10 @@
 
 #include <stm32f30x.h>
 #include <f3d_uart.h>
+
 //the initialization function to call
 void f3d_uart_init(void) {
+
   /* Initialize the clocks */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
@@ -48,12 +50,13 @@ void f3d_uart_init(void) {
 
 }
 
+
 //sends a character
 int putchar(int c) {
   while (USART_GetFlagStatus(USART1,USART_FLAG_TXE) == (uint16_t)RESET);
   USART_SendData(USART1, c);
   return 0;
-} 
+}
 
 //gets a character
 int getchar(void) {
