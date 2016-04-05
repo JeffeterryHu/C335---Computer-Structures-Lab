@@ -49,7 +49,7 @@ void f3d_systick_init(void) {
 
 void SysTick_Handler(void) {
   if(TimingDelay != 0x00){
-    TimingDelay++;
+    TimingDelay--;
   }
 }
 
