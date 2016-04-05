@@ -40,6 +40,7 @@
 #include <f3d_uart.h>
 
 volatile int systick_flag = 0;
+volatile uint32_t TimingDelay;
 
 void f3d_systick_init(void) {
   // this call would produce generate 100 interrupts per second
@@ -47,6 +48,9 @@ void f3d_systick_init(void) {
 }
 
 void SysTick_Handler(void) {
+  if(TimingDelay != 0x00){
+    TimingDelay++;
+  }
 }
 
 /* f3d_systick.c ends here */
