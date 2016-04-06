@@ -40,7 +40,11 @@
 #include <f3d_uart.h>
 
 volatile int systick_flag = 0;
-volatile uint32_t TimingDelay;
+int num;
+int i;
+
+f3d_user_btn_init();
+f3d_led_init();
 
 void f3d_systick_init(void) {
   // this call would produce generate 100 interrupts per second
@@ -48,8 +52,15 @@ void f3d_systick_init(void) {
 }
 
 void SysTick_Handler(void) {
-  if(TimingDelay != 0x00){
-    TimingDelay--;
+  if(user_btn_read()){
+    f3d_led_on(i);
+    i++;
+    if(i>7){
+      i = 0;
+    }
+  }
+  else{
+    
   }
 }
 
