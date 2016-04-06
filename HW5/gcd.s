@@ -26,72 +26,74 @@
 	
 	find the greatest common denominator
 
-	x = first number
-	y = second number
-	while(y != 0){
-		t = y
-		y = x % y
-		x = t
-	}
-	then x is the gcd
-
+	first, I used r3 = a, r4 = b, r5 = 1 and the same logic
+	nothing shows up except "Fib tests passed"
+	then, I made r3 as a variable which changes the value all time (r3 = a or r3 = b),
+	then things work, this confused me
 */
 	
 gcd:	
 	push {r4-r7}
-	movs r2, 0        // let r2 = 0 which is d
-	movs r3, r0       // let r3 = r0 (a)
-	movs r4, r1       // let r4 = r1 (b)
-	movs r5, 1        // let r5 = 1
+	movs r2, 0        // let r2 = d    
+	movs r4, 1        // let r4 = 1
 
 	.Label1:           /* first while loop */
 
-	ands r3, r5       // this will check (a & 1)
-	bne .END	  // if r3(a) is odd, goto label END
-	ands r4, r5       // this will check (b & 1)
-	bne .END          // is b is odd, goto END
+	movs r3, r0	  // let r3 = a
+	ands r3, r4       // this will check (a & 1)
+	bne .THEN         // if r3(a) is odd, goto label THEN
+
+	movs r3, r1	  // let r3 = b
+	ands r3, r4       // this will check (b & 1)
+	bne .THEN          // is b is odd, goto THEN
+
 	asrs r0, 1	  // let a >>= 1 (according to gcd_c.c)
 	asrs r1, 1	  // let b >>= 1 (according to gcd_c.c)
 	adds r2, 1	  // let d += 1 (according to gcd_c.c)
 	b .Label1	  // repeat this process until the while loop condition does not match
 
+	.THEN:
+	
 	.Label2:           /* second while loop */
 
 	cmp r0, r1        // compare r0 and r1 ( a, b)
-	beq .Label3        // if r1 equals r0 (a = b), then goto Label3
-	ands r3, r5       // check (a & 1)
+	beq .END          // if r1 equals r0 (a = b), then goto END
+
+	movs r3, r0	  // let r3 = a
+	ands r3, r4       // check (a & 1)
 	bne .Label4
+
 	asrs r0, 1	  // let a>>= 1
 	b .Label2	  // goto while loop (Label2)
 
-	.Label3:
-
-	lsls r0, r2       // logic shift left
-	pop {r4-r7}
-	bx	lr
-	
 	.Label4: 	  /* first else if */
 
-	ands r4, r5       // check (b & 1)
+	movs r3, r1       // let r3 = b
+	ands r3, r4       // check (b & 1)
 	bne .Label5	  // if b is not odd, goto Label5	
+
 	asrs r1, 1	  // if b is odd, then b >>= 1
 	b .Label2	  // goto while loop (Label2)
 	
 	.Label5: 	  /* second else if */
 
-	ands r0, r1	  // check a and b
-	subs r5, r0, r1	  // if a > b, then let r5 = a - b
+	subs r3, r0, r1	  // if a > b, then let r3 = a - b
 	ble .Label6	  // if a < b, then goto Label6
-	asrs r5, 1        // then r5 >> 1
-	movs r0, r5	  // let a equals to the value of r5
-	b .Label2          // goto while loop (Label2)
+
+	asrs r3, 1        // then r3 >> 1
+	movs r0, r3	  // let a equals to the value of r3
+	b .Label2         // goto while loop (Label2)
 
 	.Label6: 	  /* else */
 
-	subs r5, r1, r0   // let r5 = b - a
-	asrs r5, 1    // then r5 >> 1
-	movs r1, r5       // let b equals to the value of r5 = b - a
-	b .Label2          // goto while loop (Label2)
-
-
+	subs r3, r1, r0   // let r3 = b - a
+	asrs r3, 1        // then r3 >> 1
+	movs r1, r3       // let b equals to the value of b - a
+	b .Label2         // goto while loop (Label2)
+	
 	.END:
+
+	lsls r0, r2       // logic shift left
+
+	pop {r4-r7}
+	bx	lr
