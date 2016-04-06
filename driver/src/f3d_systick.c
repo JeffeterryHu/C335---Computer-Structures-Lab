@@ -43,8 +43,6 @@ volatile int systick_flag = 0;
 int num;
 int i;
 
-f3d_user_btn_init();
-f3d_led_init();
 
 void f3d_systick_init(void) {
   // this call would produce generate 100 interrupts per second
@@ -52,16 +50,16 @@ void f3d_systick_init(void) {
 }
 
 void SysTick_Handler(void) {
-  if(user_btn_read()){
-    f3d_led_on(i);
-    i++;
-    if(i>7){
-      i = 0;
-    }
-  }
-  else{
+  /* if(user_btn_read()){ */
+  /*   f3d_led_on(i); */
+  /*   i++; */
+  /*   if(i>7){ */
+  /*     i = 0; */
+  /*   } */
+  /* } */
+  /* else{ */
     
-  }
+  /* } */
 }
 
 /* f3d_systick.c ends here */
