@@ -1,0 +1,11 @@
+Lab 11 report
+Shichao Hu
+4/7/2016
+
+I encountered lots of problems in this lab
+
+First, when I doing the LED slow motion, I was confused about using the systick handler and accidently puts the codes in the main.c, and turns out the interrupts does not exists. Then I found out that all the codes and the flush_uart should both go in the systick handler.
+
+Also, at the beginning, it was hard to understand the queue functions, and the use of enqueue and dequeue confused me. It takes me a lot of time to figure out how the head and tail works for a queue.
+
+Another thing I worked on is improving the LED circle fluency, I used a if statement first, while the i is reseting to -1, the starting led lags little longer than other ones. Then I changed to a single statement of using %, so i is increasing all the time instead of reseting once a while.

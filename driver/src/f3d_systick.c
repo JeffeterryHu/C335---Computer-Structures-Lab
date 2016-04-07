@@ -2,11 +2,11 @@
  * 
  * Filename: f3d_systick.c
  * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Thu Nov 14 07:57:37 2013
- * Last-Updated: 
- *           By: 
+ * Author: Shichao Hu
+ * Maintainer: Shichao Hu
+ * Created: 3/31/2016
+ * Last-Updated: 4/6/2016
+ *           By: Shichao Hu
  *     Update #: 0
  * Keywords: 
  * Compatibility: 
@@ -38,11 +38,10 @@
 #include <f3d_led.h> 
 #include <f3d_user_btn.h>
 #include <f3d_uart.h>
+#include <queue.h>
 
 volatile int systick_flag = 0;
-int num;
 int i;
-
 
 void f3d_systick_init(void) {
   // this call would produce generate 100 interrupts per second
@@ -50,16 +49,27 @@ void f3d_systick_init(void) {
 }
 
 void SysTick_Handler(void) {
-  /* if(user_btn_read()){ */
-  /*   f3d_led_on(i); */
-  /*   i++; */
-  /*   if(i>7){ */
-  /*     i = 0; */
-  /*   } */
-  /* } */
-  /* else{ */
-    
-  /* } */
+
+  //SysTick_Handler as the new delay function
+  if(user_btn_read()){
+    // if user button is pressed, the led circle goes to slow rate (10 interrupts/second)
+    SysTick_Config(SystemCoreClock/10);
+  }
+  else{
+    // if not, the led circle has fast rate of 100 interrupts per second
+    SysTick_Config(SystemCoreClock/100);
+  }
+
+  // my led function
+  f3d_led_off(i);
+  i = (i + 1) % 9;
+  f3d_led_on(i);
+
+  /////////////////////////////////////////////
+  if(!queue_empty(&txbuf)){
+    flush_uart();
+  }
+
 }
 
 /* f3d_systick.c ends here */

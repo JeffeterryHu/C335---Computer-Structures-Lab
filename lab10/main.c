@@ -93,7 +93,6 @@ int main(void) {
   f3d_nunchuk_init();
   delay(10);
 
-
   f_mount(0, &Fatfs); /* Register volume work area (never fails) */
 
   printf("\nOpen an existing file (message.txt).\n");

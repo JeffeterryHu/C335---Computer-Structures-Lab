@@ -2,12 +2,13 @@
  * 
  * Filename: queue.h
  * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Thu Feb  7 19:47:41 2013 (-0500)
+ * Author: Shichao Hu
+ * Maintainer: Shichao Hu
+ * Partner: Broadmore Tung
+ * Created: 3/31/2016
  * Version: 
- * Last-Updated: 
- *           By: 
+ * Last-Updated: 4/7/2016
+ *           By: Shichao Hu
  *     Update #: 0
  * URL: 
  * Doc URL: 
@@ -53,9 +54,14 @@ typedef struct queue {
   int buffer[QUEUE_SIZE];
 } queue_t;
 
+queue_t rxbuf;
+queue_t txbuf;
+
 void init_queue(queue_t *);
 int enqueue(queue_t *, int);
 int dequeue(queue_t *);            
-int queue_empty(queue_t *);            
+int queue_empty(queue_t *);
+
+
 
 /* queue.h ends here */
