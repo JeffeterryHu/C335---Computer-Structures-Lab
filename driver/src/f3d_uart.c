@@ -21,8 +21,6 @@
 #include <queue.h>
 #include <string.h>
 
-queue_t rxbuf;
-queue_t txbuf;
 
 //the initialization function to call
 void f3d_uart_init(void) {
@@ -108,8 +106,11 @@ void f3d_uart_init(void) {
 }
 
 int putchar (int c){
-  return !enqueue(&txbuf, c);
+  if(c != 0){
+    enqueue(&txbuf, c);
   }
+  return c;
+}
 
 /* int putchar (int c) */
 /* { */
@@ -130,8 +131,11 @@ int putchar (int c){
 
 
 int getchar (void){
-  int result = dequeue(&rxbuf);
-  return result;
+  int result = 0;
+  while(!queue_empty(&rxbuf)){
+    result = dequeue(&rxbuf);
+  }
+    return result;
 }
 
 /* int getchar (void) */

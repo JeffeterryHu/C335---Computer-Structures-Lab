@@ -54,8 +54,8 @@ typedef struct queue {
   int buffer[QUEUE_SIZE];
 } queue_t;
 
-queue_t rxbuf;
-queue_t txbuf;
+static queue_t rxbuf;
+static queue_t txbuf;
 
 void init_queue(queue_t *);
 int enqueue(queue_t *, int);
