@@ -2,11 +2,11 @@
  * 
  * Filename: f3d_systick.c
  * Description: 
- * Author: Shichao Hu
- * Maintainer: Shichao Hu
- * Created: 3/31/2016
- * Last-Updated: 4/6/2016
- *           By: Shichao Hu
+ * Author: Bryce Himebaugh
+ * Maintainer: 
+ * Created: Thu Nov 14 07:57:37 2013
+ * Last-Updated: 
+ *           By: 
  *     Update #: 0
  * Keywords: 
  * Compatibility: 
@@ -38,38 +38,48 @@
 #include <f3d_led.h> 
 #include <f3d_user_btn.h>
 #include <f3d_uart.h>
-#include <queue.h>
+#include "queue.h"
 
+extern queue_t txbuf;
+extern queue_t rxbuf;
 volatile int systick_flag = 0;
-int i;
+int counter = 0;
+int i=0;
 
 void f3d_systick_init(void) {
-  // this call would produce generate 100 interrupts per second
-  SysTick_Config(SystemCoreClock/100);
+	f3d_led_init();
+	f3d_user_btn_init();
+	SysTick_Config(SystemCoreClock/SYSTICK_INT_SEC);
 }
 
+
 void SysTick_Handler(void) {
-
-  //SysTick_Handler as the new delay function
-  if(user_btn_read()){
-    // if user button is pressed, the led circle goes to slow rate (10 interrupts/second)
-    SysTick_Config(SystemCoreClock/10);
-  }
-  else{
-    // if not, the led circle has fast rate of 100 interrupts per second
-    SysTick_Config(SystemCoreClock/100);
-  }
-
-  // my led function
-  f3d_led_off(i);
-  i = (i + 1) % 9;
-  f3d_led_on(i);
-
-  /////////////////////////////////////////////
-  if(!queue_empty(&txbuf)){
-    flush_uart();
-  }
-
+	if (!queue_empty(&txbuf)) {
+    	flush_uart();
+  	}
+	if (GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)) {
+		f3d_led_all_off();
+        	//while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0));
+        	if(counter == 10){
+                        counter = 0;
+                        f3d_led_on(i);
+                        i++;
+                        if(i > 8){
+                                i = 0;
+				
+                        }
+                }
+                counter++;	
+       }
+	 else {
+		f3d_led_all_off();
+                f3d_led_on(i);
+                i++;
+                if(i > 8){
+                        i = 0;
+			//f3d_led_all_off();
+                }
+        }
 }
 
 /* f3d_systick.c ends here */

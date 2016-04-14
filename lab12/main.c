@@ -2,7 +2,7 @@
  * 
  * Filename: main.c
  * Description: 
- * Author: 
+ * Author: Luke Street (ldstreet) & Shichao Hu(hushi)
  * Maintainer: 
  * Created: Thu Jan 10 11:23:43 2013
  * Last-Updated: 
@@ -82,7 +82,7 @@ void die (FRESULT rc) {
   while (1);
 }
 
-int main(void) { 
+int playAudio(char* file_name){
 
   FRESULT rc;			/* Result code */
   DIR dir;			/* Directory object */
@@ -91,24 +91,11 @@ int main(void) {
   unsigned int retval;
   int bytesread;
 
-  setvbuf(stdin, NULL, _IONBF, 0);
-  setvbuf(stdout, NULL, _IONBF, 0);
-  setvbuf(stderr, NULL, _IONBF, 0);
-
-  f3d_uart_init();
-  f3d_timer2_init();
-  f3d_dac_init();
-  f3d_delay_init();
-  f3d_rtc_init();
-  f3d_systick_init();
-
-  printf("Reset\n");
-  
   f_mount(0, &Fatfs);/* Register volume work area */
 
-  printf("\nOpen thermo.wav\n");
-  rc = f_open(&fid, "thermo.wav", FA_READ);
-  
+  printf("\nOpen %s\n", file_name);
+  rc = f_open(&fid, file_name, FA_READ);
+  if(rc){die(rc);}
   if (!rc) {
     struct ckhd hd;
     uint32_t  waveid;
@@ -180,7 +167,119 @@ int main(void) {
   rc = f_close(&fid);
   
   if (rc) die(rc);
-  while (1);
+}
+
+int drawMenu(int index, char files[4][20], uint16_t underline_color){
+
+  //f3d_lcd_fillScreen(WHITE);
+  int i; 
+  int y = 20;
+  
+  int blockY = index*30 + 30;
+  f3d_lcd_setAddrWindow(15, blockY, 100, blockY + 2, MADCTLGRAPHICS);
+
+  uint16_t cBuff[172];
+  int j;
+  for(j = 0; j < 172; j++){
+    cBuff[j] = underline_color;
+  }
+  
+  f3d_lcd_pushColor(cBuff, 172);
+
+  for(i = 0; i < 4; i++){
+    f3d_lcd_drawString(20, y, files[i], BLACK, WHITE);
+    y += 30;
+  }
+  return 1;
+
+}
+
+int drawCompleteMenu(int index, char files[4][20]){
+  int prevIndex = index - 1;
+  if(prevIndex < 0){prevIndex = 3;}
+  int nextIndex = index + 1;
+  if(nextIndex > 3){nextIndex = 0;}
+  printf("Ind:%d, prev:%d, next:%d\n", index, prevIndex, nextIndex);
+  drawMenu(prevIndex, files, WHITE);
+  drawMenu(nextIndex, files, WHITE);
+  drawMenu(index, files, BLUE);
+  return 1;
+}
+
+
+
+int main(void) { 
+
+  
+
+  setvbuf(stdin, NULL, _IONBF, 0);
+  setvbuf(stdout, NULL, _IONBF, 0);
+  setvbuf(stderr, NULL, _IONBF, 0);
+
+  f3d_uart_init();
+  f3d_timer2_init();
+  f3d_dac_init();
+  f3d_delay_init();
+  f3d_rtc_init();
+  f3d_systick_init();
+  f3d_lcd_init();
+
+  f3d_i2c1_init();
+  delay(10);
+  f3d_accel_init();
+  delay(10);
+  f3d_nunchuk_init();
+  delay(10);
+
+  f3d_lcd_fillScreen(WHITE);
+  //delay(1000)
+  f3d_lcd_fillScreen(BLUE);
+  f3d_lcd_fillScreen(WHITE);
+  f3d_lcd_fillScreen(BLUE);
+  f3d_lcd_fillScreen(WHITE);
+
+  printf("Reset\n");
+  
+  char files[4][20];
+  sprintf(files[0], "thermo.wav");
+  sprintf(files[1],"bell.wav");
+  sprintf(files[2],"chime.wav");
+  sprintf(files[3],"trumpet.wav");
+  
+  
+
+  int audioIndex = 0;
+  
+  drawCompleteMenu(audioIndex, &files);
+  playAudio(files[audioIndex]);
+  
+  nunchuk_t n;
+  while (1){
+    f3d_nunchuk_read(&n);
+    //check to cycle images based on nunchuk toggle
+    if(n.jx > 150){
+      while(n.jx > 150){
+          f3d_nunchuk_read(&n);
+      }
+      audioIndex++;
+      if(audioIndex > 3){
+	audioIndex = 0;
+      }
+      drawCompleteMenu(audioIndex, &files);
+      playAudio(files[audioIndex]);
+      
+    }else if(n.jx < 110){
+      while(n.jx < 110){
+          f3d_nunchuk_read(&n);
+      }
+      audioIndex--;
+      if(audioIndex < 0){
+	audioIndex = 3;
+      }
+      drawCompleteMenu(audioIndex, &files);
+      playAudio(files[audioIndex]);
+    }
+  }
 }
 
 #ifdef USE_FULL_ASSERT

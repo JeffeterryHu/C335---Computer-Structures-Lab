@@ -1,87 +1,77 @@
-/* f3d_lcd_sd.c ---
-*
-* Filename: f3d_lcd_sd.c
-* Description:
-* Author: Bryce Himebaugh
-* Maintainer:
-* Created: Thu Oct 24 05:18:36 2013
-* Last-Updated:
-* By:
-* Update #: 0
-* Keywords:
-* Compatibility:
-*
-*/
+/* f3d_lcd_sd.c --- 
+ * 
+ * Filename: f3d_lcd_sd.c
+ * Description: 
+ * Author: Bryce Himebaugh
+ * Maintainer: Luke Street & Sijie Yu
+ * Created: Thu Oct 24 05:18:36 2013
+ * Last-Updated: 
+ *           By: Luke Street & Sijie Yu
+ *     Update #: 0
+ * Keywords: 
+ * Compatibility: 
+ * 
+ */
 
-/* Commentary:
-*
-*
-*
-*/
+/* Commentary: 
+ * 
+ * 
+ * 
+ */
 
 /* Change log:
-*
-*
-*/
+ * 
+ * 
+ */
 
-/* Copyright (c) 2004-2007 The Trustees of Indiana University and
-* Indiana University Research and Technology Corporation.
-*
-* All rights reserved.
-*
-* Additional copyrights may follow
-*/
-/*
-  f3d_lcd_sd.c
-
-  Summary:
-  These definitions init the LCD screen and allow for cross communication between the board and the LCD
-  
-    Author: Shichao Hu
-    Partners: Nathan
-    Date Created: February 25, 2016
-    Date Last Modified: March 8, 2016
-    Assignment: Lab7
-    Part of: LCD initialization
- *
-
+/* Copyright (c) 2004-2007 The Trustees of Indiana University and 
+ * Indiana University Research and Technology Corporation.  
+ * 
+ * All rights reserved. 
+ * 
+ * Additional copyrights may follow 
+ */
 
 /* Code: */
 #include <f3d_lcd_sd.h>
 #include <f3d_delay.h>
 #include <glcdfont.h>
-#include <math.h>
 
 static uint8_t madctlcurrent = MADVAL(MADCTLGRAPHICS);
 
 void f3d_lcd_sd_interface_init(void) {
- /* vvvvvvvvvvv pin initialization for the LCD goes here vvvvvvvvvv*/
-  //inits the LCD board
+ /* vvvvvvvvvvv pin initialization for the LCD goes here vvvvvvvvvv*/ 
+  
   GPIO_InitTypeDef GPIO_InitStructure;
+
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+  
+  //SCK MISO MOSI Pin Initialization
   GPIO_StructInit(&GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 |  GPIO_Pin_14 |  GPIO_Pin_15; 
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB,&GPIO_InitStructure);  
+
+  //AF Configuration
+  GPIO_PinAFConfig(GPIOB,13,GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOB,14,GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOB,15,GPIO_AF_5);
+  
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  //CS Pin Initialization
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_8;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  
   GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  //inits the Alternate function keys
-  GPIO_StructInit(&GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  //alternate functions
-  GPIO_PinAFConfig(GPIOB, 13, GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOB, 14, GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOB, 15, GPIO_AF_5);
-
-  //chip select to high
-  LCD_CS_DEASSERT();
   
   /* ^^^^^^^^^^^ pin initialization for the LCD goes here ^^^^^^^^^^ */
  
@@ -98,18 +88,13 @@ void f3d_lcd_sd_interface_init(void) {
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_Init(SPI2, &SPI_InitStructure); //changed comment to SPI2
-  SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF); //changed comment to SPI2
-  SPI_Cmd(SPI2, ENABLE); //changed comment to SPI2
-  
-  //SD card
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  SPI_Init(SPI2, &SPI_InitStructure);
+  SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF);
+  SPI_Cmd(SPI2, ENABLE);
 
-}
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+  
+} 
 
 
 struct lcd_cmdBuf {
@@ -173,13 +158,13 @@ static const struct lcd_cmdBuf initializers[] = {
 void f3d_lcd_init(void) {
   const struct lcd_cmdBuf *cmd;
 
-  f3d_lcd_sd_interface_init(); // Setup SPI2 Link and configure GPIO pins
-  LCD_BKL_ON(); // Enable Backlight
+  f3d_lcd_sd_interface_init();    // Setup SPI2 Link and configure GPIO pins
+  LCD_BKL_ON();                   // Enable Backlight
 
   // Make sure that the chip select and reset lines are deasserted
-  LCD_CS_DEASSERT(); // Deassert Chip Select
+  LCD_CS_DEASSERT();              // Deassert Chip Select
 
-  LCD_RESET_DEASSERT();
+  LCD_RESET_DEASSERT();           
   delay(100);
   LCD_RESET_ASSERT();
   delay(100);
@@ -197,6 +182,29 @@ void f3d_lcd_init(void) {
   }
 }
 
+/*
+void f3d_lcd_fillScreen(uint16_t color) {
+  uint8_t y;
+  uint16_t x[ST7735_width];
+  for (y = 0; y < ST7735_width; y++) x[y] = color;
+  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
+  for (y=0;y<ST7735_height; y++) {
+    f3d_lcd_pushColor(x,ST7735_width);
+  }
+}
+*/
+
+/*  courtesy of bbmerric */
+void f3d_lcd_fillScreen(uint16_t color) {
+  uint8_t y;
+  uint16_t x[ST7735_width];
+  for (y = 0; y < ST7735_width; y++) x[y] = color;
+  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
+  for (y=0;y<ST7735_height; y++) {
+    f3d_lcd_pushColor(x,ST7735_width);
+  }
+}
+
 static void LcdWrite(char dc,const char *data,int nbytes) {
   GPIO_WriteBit(LCD_PORT,GPIO_PIN_DC,dc); // dc 1 = data , 0 = control
   GPIO_ResetBits(LCD_PORT,GPIO_PIN_SCE);
@@ -205,12 +213,138 @@ static void LcdWrite(char dc,const char *data,int nbytes) {
 }
 
 static void LcdWrite16(char dc,const uint16_t *data,int cnt) {
-  GPIO_WriteBit(LCD_PORT,GPIO_PIN_DC,dc);
+  GPIO_WriteBit(LCD_PORT,GPIO_PIN_DC,dc); 
   GPIO_ResetBits(LCD_PORT,GPIO_PIN_SCE);
   spiReadWrite16(SPILCD,0,data,cnt,LCDSPEED);
   GPIO_SetBits(LCD_PORT,GPIO_PIN_SCE);
 }
 
+static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *rbuf, unsigned count) {
+  DMA_InitTypeDef DMA_InitStructure;
+  uint16_t dummy[] = {0xffff};
+
+  DMA_Channel_TypeDef *rxChan;
+  DMA_Channel_TypeDef *txChan;
+  uint32_t dmaflag;
+
+  if (count & 1)
+    return -1;
+
+  if (SPIx == SPI1) {
+    rxChan = DMA1_Channel2;
+    txChan = DMA1_Channel3;
+    dmaflag = DMA1_FLAG_TC2;
+  }
+  else if (SPIx == SPI2) {
+    rxChan = DMA1_Channel4;
+    txChan = DMA1_Channel5;
+    dmaflag = DMA1_FLAG_TC4;
+  }
+  else
+    return -1;
+
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&(SPIx->DR));
+  if (half) {
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+  }
+  else {
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+  }
+  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+  DMA_InitStructure.DMA_BufferSize = count;
+  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+  DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+  DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+
+  DMA_DeInit(rxChan);
+  DMA_DeInit(txChan);
+
+  if (rbuf) {
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)rbuf;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+  }
+  else {
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) dummy;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
+  }
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+  DMA_Init(rxChan, &DMA_InitStructure);
+
+  if (tbuf) {
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)tbuf;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+  }
+  else {
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) dummy;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
+  }
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+  DMA_Init(txChan, &DMA_InitStructure);
+
+  // Enable channels
+  DMA_Cmd(rxChan, ENABLE);
+  DMA_Cmd(txChan, ENABLE);
+
+  // Enable SPI TX/RX request
+  SPI_I2S_DMACmd(SPIx, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);
+
+  // Wait for completion
+  while (DMA_GetFlagStatus(dmaflag) == RESET) { ; }
+
+  // Disable channels
+  DMA_Cmd(rxChan, DISABLE);
+  DMA_Cmd(txChan, DISABLE);
+  SPI_I2S_DMACmd(SPIx, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, DISABLE);
+  return count;
+}
+
+int spiReadWrite(SPI_TypeDef *SPIx, uint8_t *rbuf, const uint8_t *tbuf, int cnt, uint16_t speed) {
+  int i;
+  SPIx->CR1 = (SPIx->CR1 & ~SPI_BaudRatePrescaler_256) | speed;
+
+  if ((cnt > 4) && !(cnt & 1)) {
+    return xchng_datablock(SPIx, 0, tbuf, rbuf , cnt);
+  }
+  else {
+    for (i = 0; i < cnt; i++){
+      SPI_SendData8(SPIx, tbuf ? *tbuf++ : 0xff);
+      while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);
+      if (rbuf) {
+    *rbuf++ = SPI_ReceiveData8(SPIx);
+      } else  {
+    SPI_ReceiveData8(SPIx);
+      }
+    }
+    return i;
+  }
+}
+
+
+int spiReadWrite16(SPI_TypeDef *SPIx, uint16_t *rbuf, const uint16_t *tbuf, int cnt, uint16_t speed) {
+  int i;
+  SPIx->CR1 = (SPIx->CR1 & ~SPI_BaudRatePrescaler_256) | speed;
+  SPI_DataSizeConfig(SPIx, SPI_DataSize_16b);
+  if ((cnt > 4) && !(cnt & 3)) {
+    i =  xchng_datablock(SPIx, 1, tbuf, rbuf , cnt);
+  }
+  else {
+    for (i = 0; i < cnt; i++){
+      SPI_I2S_SendData16(SPIx, tbuf ? *tbuf++ : 0xffff);
+      while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);
+      if (rbuf) {
+    *rbuf++ = SPI_I2S_ReceiveData16(SPIx);
+      } else {
+    SPI_I2S_ReceiveData16(SPIx);
+      }
+    }
+  }
+  SPI_DataSizeConfig(SPIx, SPI_DataSize_8b);
+  return i;
+}
+
+/*
 int spiReadWrite(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint8_t *tbuf, int cnt, uint16_t speed) {
   int i;
   int timeout;
@@ -219,7 +353,7 @@ int spiReadWrite(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint8_t *tbuf, int cnt, 
   for (i = 0; i < cnt; i++){
     if (tbuf) {
       SPI_SendData8(SPIx,*tbuf++);
-    }
+    } 
     else {
       SPI_SendData8(SPIx,0xff);
     }
@@ -227,13 +361,14 @@ int spiReadWrite(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint8_t *tbuf, int cnt, 
     while (SPI_I2S_GetFlagStatus(SPIx,SPI_I2S_FLAG_RXNE) == RESET);
     if (rbuf) {
       *rbuf++ = SPI_ReceiveData8(SPIx);
-    }
+    } 
     else {
       SPI_ReceiveData8(SPIx);
     }
   }
   return i;
 }
+
 
 int spiReadWrite16(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint16_t *tbuf, int cnt, uint16_t speed) {
   int i;
@@ -243,16 +378,16 @@ int spiReadWrite16(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint16_t *tbuf, int cn
 
   for (i = 0; i < cnt; i++){
     if (tbuf) {
-      // printf("data=0x%4x\n\r",*tbuf);
+      //      printf("data=0x%4x\n\r",*tbuf);
       SPI_I2S_SendData16(SPIx,*tbuf++);
-    }
+    } 
     else {
       SPI_I2S_SendData16(SPIx,0xffff);
     }
     while (SPI_I2S_GetFlagStatus(SPIx,SPI_I2S_FLAG_RXNE) == RESET);
     if (rbuf) {
       *rbuf++ = SPI_I2S_ReceiveData16(SPIx);
-    }
+    } 
     else {
       SPI_I2S_ReceiveData16(SPIx);
     }
@@ -261,7 +396,7 @@ int spiReadWrite16(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint16_t *tbuf, int cn
 
   return i;
 }
-
+*/
 void f3d_lcd_setAddrWindow ( uint16_t x0 , uint16_t y0 , uint16_t x1 , uint16_t y1 , uint8_t madctl) {
   madctl = MADVAL ( madctl );
   if ( madctl != madctlcurrent ){
@@ -286,25 +421,6 @@ static void f3d_lcd_writeCmd(uint8_t c) {
   LcdWrite(LCD_C,&c,1);
 }
 
-void f3d_lcd_fillScreen(uint16_t color) {
-  uint8_t x,y;
-  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
-  for (x=0;x<ST7735_width;x++) {
-    for (y=0;y<ST7735_height; y++) {
-      f3d_lcd_pushColor(&color,1);
-    }
-  }
-}
-
-void f3d_lcd_fillScreen2(uint16_t color) { //added for faster speed calculation
-  uint8_t y;
-  uint16_t x[ST7735_width];
-  for (y = 0; y < ST7735_width; y++) x[y] = color;
-  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
-  for (y=0;y<ST7735_height; y++) {
-    f3d_lcd_pushColor(x,ST7735_width);
-  }
-}
 
 void f3d_lcd_drawPixel(uint8_t x, uint8_t y, uint16_t color) {
   if ((x >= ST7735_width) || (y >= ST7735_height)) return;
@@ -315,7 +431,7 @@ void f3d_lcd_drawPixel(uint8_t x, uint8_t y, uint16_t color) {
 void f3d_lcd_drawChar(uint8_t x, uint8_t y, unsigned char c, uint16_t color, uint16_t background_color) {
   int i, j;
   for (i = 0; i < 5; i++) {
-    for (j = 0; j < 8; j++){
+    for (j = 0; j < 8; j++){ 
       f3d_lcd_drawPixel(x+i,y+j, background_color);
     }
   }
@@ -330,93 +446,15 @@ void f3d_lcd_drawChar(uint8_t x, uint8_t y, unsigned char c, uint16_t color, uin
   }
 }
 
-//draws a circle
-void f3d_lcd_drawCircle(int x0, int y0, uint8_t radius, uint16_t color) {
-  int x = radius, y = 0;
-  int radiusError = 1 - x;
-  while(x >= y) {
-    //draws pythagorean style pixels
-    f3d_lcd_drawPixel((uint8_t)x + x0, (uint8_t)y + y0, color);
-    f3d_lcd_drawPixel((uint8_t)y + x0, (uint8_t)x + y0, color);
-    f3d_lcd_drawPixel((uint8_t)-x + x0, (uint8_t)y + y0, color);
-    f3d_lcd_drawPixel((uint8_t)-y + x0, (uint8_t)x + y0, color);
-    f3d_lcd_drawPixel((uint8_t)-x + x0, (uint8_t)-y + y0, color);
-    f3d_lcd_drawPixel((uint8_t)-y + x0, (uint8_t)-x + y0, color);
-    f3d_lcd_drawPixel((uint8_t)x + x0, (uint8_t)-y + y0, color);
-    f3d_lcd_drawPixel((uint8_t)y + x0, (uint8_t)-x + y0, color);
-    y++;
-    if(radiusError < 0)
-      radiusError += 2 * y + 1;
-    else {
-      x--;
-      radiusError += 2 * (y - x + 1);
-    }
-  }
-}
-//writes the string vertically
-void f3d_lcd_drawStringV(uint8_t x, uint8_t y, char *c, uint16_t color, uint16_t background_color) { 
-  while (c && *c) {
-    f3d_lcd_drawChar(x, y, *c++, color, background_color);
-    y += 8; //from x+=6 y+=8
-    if (y + 8 >= ST7735_height) { //from x to y and width to height and 5 to 8
-      x += 10; //from y to x
-      y = 0; //from x to y
-    }
-  }
-}
-
-//writes the string horizontally
-void f3d_lcd_drawStringH(uint8_t x, uint8_t y, char *c, uint16_t color, uint16_t background_color) {
+void f3d_lcd_drawString(uint8_t x, uint8_t y, char *c, uint16_t color, uint16_t background_color) {
   while (c && *c) {
     f3d_lcd_drawChar(x, y, *c++, color, background_color);
     x += 6;
-    if (x + 5 >= ST7735_width) { 
-      y += 10; 
-      x = 0; 
+    if (x + 5 >= ST7735_width) {
+      y += 10;
+      x = 0;
     }
   }
 }
 
-//draws the compass line
-void f3d_lcd_drawLine(int x1, int y1, int x2, int y2, uint16_t color) {
-  int deltax, stepx, deltay, stepy, error;
-  if (x2 > x1) {
-    deltax = x2 - x1;
-    stepx = 1;
-  } else {
-    deltax = x1 - x2;
-    stepx = -1;
-  }
-  if (y2 > y1) {
-    deltay = y2 - y1;
-    stepy = 1;
-  } else {
-    deltay = y1 - y2;
-    stepy = -1;
-  }
-  error = deltax - deltay;
-  while ( (x1 != x2 + stepx) && (y1 != y2 + stepy) ) { //keeps the coordinates from reaching the second pair coordinates
-    f3d_lcd_drawPixel((uint8_t)x1, (uint8_t)y1, color);
-    if (error * 2 >= -1 * deltay) { 
-      x1 = x1 + stepx;
-      error = error - deltay;
-    }
-    if (error * 2 <= deltax) {
-      y1 = y1 + stepy;
-      error = error + deltax;
-    }
-  }
-}
-
-//has the exception error for x = 0
-void f3d_lcd_drawCompass(double angle, uint16_t color) {
-  int r = 50;
-  if (angle == 0.0){
-  f3d_lcd_drawLine(64,80,(int)64,(int)30,color);
-  }
-  double rad = (angle+180)*(3.14/180);
-  float x = sin(rad) * r;
-  float y = cos(rad) * r;
-  f3d_lcd_drawLine(64,80,(int)x+64,(int)y+80,color);
-}
-
+/* f3d_lcd_sd.c ends here */

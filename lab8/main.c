@@ -4,6 +4,7 @@
 * Description: main program to build a compass
 * Author: Robert Mulligan
 * Maintainer: Robert Mulligan
+* Partner: Shichao Hu
 * Created: Thu Feb 7 2016
 /* Code: */
 
