@@ -54,6 +54,8 @@ void Delay(int millis)
   SDL_Delay(millis);
 }
 
+//////////MY CODE/////////////
+
 int SDL_main(int argc, char *argv[])
 {
 
@@ -69,7 +71,7 @@ int SDL_main(int argc, char *argv[])
   //Set up screen
 
   init_screen(portrait);
-  // init_screen(landscape);
+  //init_screen(landscape);
 
   SDL_AddTimer(50, signal_handler, 0);
 

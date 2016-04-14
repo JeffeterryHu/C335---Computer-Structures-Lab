@@ -2,11 +2,11 @@
  * 
  * Filename: pong.c
  * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Mon Aug 11 10:50:08 2014
- * Last-Updated: 
- *           By: 
+ * Author: Shichao Hu
+ * Maintainer: Shichao Hu
+ * Created: 4/12/2016
+ * Last-Updated: 4/14/2016
+ *           By: Shichao Hu
  *     Update #: 0
  * Keywords: 
  * Compatibility: 
@@ -55,12 +55,19 @@ rect_t ball;
 int ball_vx = 1;
 int ball_vy = 2;
 
+FILE* p;
+char* buffer = NULL;
+size_t size = 0;
+ssize_t get;
+
+
 /*The event loop that handles the key input*/
 void event_loop(void) {
   static int paddle_left_move = 0; 
   static int paddle_right_move = 0;
   SDL_Event event;
   SDL_PollEvent(&event);
+
   switch(event.type) {
   case SDL_KEYUP:
     switch (event.key.keysym.sym) {
@@ -98,6 +105,17 @@ void event_loop(void) {
       printf("Q PRESSED - Exit Program\n");
       exit(0);
       break;
+      // case when n is pressed
+      // while n is pressed, get the coordinate value
+    case SDLK_n:
+      printf("get coordinates from txt file");
+      get = getline(&buffer, &size, p);
+      if(get != -1){
+	drawString(55,100,buffer,YELLOW,BLACK);
+      } 
+      else{
+	break;
+      }
     default:
       break;
     }
@@ -144,6 +162,18 @@ int c335_main( int argc, char *argv[] ) {
   initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
   initRect(&right_paddle,ST7735_width-PADDLE_THICKNESS,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
   initRect(&ball,ST7735_width/2-(BALL_DIM/2),ST7735_height/2-(BALL_DIM/2),BALL_DIM,BALL_DIM,WHITE);
+
+  ////////////////////////////////CODE MODIFIED//////////////////////////////
+
+  p = fopen(argv[2], "r");
+  if(p == NULL || get == -1){
+    exit(EXIT_FAILURE);
+  }
+  else{
+    get = getline(&buffer, &size, p);
+  }
+  ///////////////////////////////////////////////////////////////////////////
+
 
   while (1) {
     pong_game();
