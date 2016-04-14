@@ -1,0 +1,29 @@
+lab12
+Shichao Hu
+report.txt
+
+Q1. What is the significance of the peripheral base address? Where does it point?
+
+	it points the STM to the correct peripheral which we need for the DMA task
+
+Q2. Why is it necessary to enable incrementing as was done in this step? What will the DMA controller do in response to this configuration
+
+	in this case, we can read/written more than one DR registers(lab manual).
+
+Q3. Why is this line of the code necessary?
+
+	while the DMA setting in the RESET mode, it blocks the data transmission and memory exchange.
+
+Q4. For transfers of less than 4 bytes, what do you think is the reason for not using the xchng_datablock functions?
+
+	the xchng_datablock function has its own overhead. so when there is less than 4 bytes, it would be faster not using the function
+
+Q5. Why is it important for the DMA controller and the audio player to work on different portions of Audiobuf
+
+	if we working on the same Audiobuf, it might casue a conflict and send out a wrong result.
+
+Difficulties and what learned:
+
+	this lab is not as hard as last several labs, by following the steps given by the lab manual, we get the wav file played easily.
+	at first, we were trying to let the board read the files from SD card and then display on the lcd. But we found that somehow doesn't work as expected like lab11. So we hard coding the file names to display on the lcd.
+	we decided to put a line under each file name to indicate which file we are playing, but got a problem on the cycling through all the files. Another thing we had trouble was the hardware issue with board, either getting rc=1 or rc=3. Luckly, we all get it figured out eventually
