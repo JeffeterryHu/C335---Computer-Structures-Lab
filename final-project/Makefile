@@ -26,6 +26,7 @@ OBJS=  $(STARTUP) 	main.o\
 			f3d_timer2.o \
 			glcdfont.o \
 			queue.o \
+			rect.o \
 			stm32f30x_rcc.o \
 			stm32f30x_tim.o \
 			stm32f30x_gpio.o \
