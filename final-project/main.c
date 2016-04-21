@@ -30,7 +30,8 @@
 //#include <guy.h>
 
 
-rect_t rectA,rectB,rectC,rectD,rectE,rectF,rectG,rectH;
+rect_t rectA,rectB,rectC,rectD,rectE,rectF,rectG,rectH,rectI,rectJ,rectK,rectL;
+rect_t rectTree1,rectTree2,rectTree3;
 
 int main(void) {
 
@@ -55,6 +56,8 @@ int main(void) {
   f3d_nunchuk_init();
   delay(10);
 
+  f3d_lcd_fillScreen(CYAN);
+
   //new fill screen
   /* f3d_lcd_fillScreen(WHITE); */
   /* f3d_lcd_fillScreen(BLUE); */
@@ -63,6 +66,45 @@ int main(void) {
   /* f3d_lcd_fillScreen(WHITE); */
   ///////////////////////////////////////////
 
+  //tree-1 bottom
+  int g,h;
+  g = 110;
+  h = 155;
+  initRect(&rectTree1,g,h,5,5,BLACK);
+  //tree-2 mid
+  int g2,h2;
+  g2 = 105;
+  h2 = 145;
+  initRect(&rectTree2,g2,h2,15,10,GREEN);
+  //tree-3 top
+  int g3,h3;
+  g3 = 110;
+  h3 = 140;
+  initRect(&rectTree3,g3,h3,5,5,GREEN);
+
+  //cloud1-bottom
+  int a,b;
+  a = 64;
+  b = 55;
+  initRect(&rectI,a,b,20,5,WHITE);
+
+  //cloud1-top
+  int a1,b1;
+  a1 = 69;
+  b1 = 50;
+  initRect(&rectJ,a1,b1,10,5,WHITE);
+
+  //cloud2-bottom
+  int a2,b2;
+  a2 = 100;
+  b2 = 35;
+  initRect(&rectL,a2,b2,20,5,WHITE);
+
+  //cloud2-top
+  int a3,b3;
+  a3 = 105;
+  b3 = 30;
+  initRect(&rectK,a3,b3,10,5,WHITE);
 
   //left eye
   int x4,y4;
@@ -112,13 +154,19 @@ int main(void) {
   n = 145;
   initRect(&rectB,m,n,15,10,RED);
 
-  f3d_lcd_fillScreen(CYAN);
-
   while (1){
 
     //int guy();
 
-    if(user_btn_read()){
+    while(user_btn_read()){
+
+      for(x = 110;x>0;x--){
+	moveRect(&rectTree1,-1,0,CYAN);
+	moveRect(&rectTree2,-1,0,CYAN);
+	moveRect(&rectTree3,-1,0,CYAN);
+	delay(10);
+      }
+
       for(y=160;y>80;y--){
 	moveRect(&rectA,0,-1,CYAN);
 	moveRect(&rectB,0,-1,CYAN);
