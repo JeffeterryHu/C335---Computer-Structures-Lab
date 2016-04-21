@@ -76,7 +76,7 @@ void f3d_uart_init(void) {
 
 
   //////////////////////////////////////////OLD CODE//////////////////////////////////////////
-  /* Initialize the clocks */
+  /* // Initialize the clocks */
   /* RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE); */
   /* RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); */
   
@@ -129,7 +129,7 @@ int putchar (int c){
 /*   return 0; */
 /* } */
 
-
+///////////////////////////////////////////////////////
 int getchar (void){
   int result = 0;
   while(!queue_empty(&rxbuf)){
@@ -152,12 +152,13 @@ int getchar (void){
 /*   return USART_ReceiveData(USART1); */
 /* } */
 
+//////////////////////////////////////////////////////////
 void USART1_IRQHandler(void) {
-  int ch; 
+  int ch;
 
   if (USART_GetFlagStatus(USART1, USART_FLAG_RXNE)) {
     ch = USART_ReceiveData(USART1);
-    if (!enqueue(&rxbuf,ch)) {}   // overflow case -- 
+    if (!enqueue(&rxbuf,ch)) {}   // overflow case --
                                    // throw away data and perhaps flag status
   }
   if (USART_GetFlagStatus(USART1,USART_FLAG_TXE)) {
@@ -166,10 +167,11 @@ void USART1_IRQHandler(void) {
       USART_SendData(USART1,ch);
     }
     else {
-      USART_ITConfig(USART1,USART_IT_TXE,DISABLE); 
+      USART_ITConfig(USART1,USART_IT_TXE,DISABLE);
     }
   }
 }
+//////////////////////////////////////////////////////////
 
 /* //sends a string */
 /* void putstring(char *s) { */

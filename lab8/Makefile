@@ -12,6 +12,7 @@ OBJS=  $(STARTUP) 	main.o f3d_delay.o \
 			f3d_uart.o f3d_accel.o \
 			f3d_i2c.o \
 			f3d_mag.o \
+			queue.o \
 			stm32f30x_i2c.o \
 			stm32f30x_tim.o \
 			stm32f30x_rcc.o \
