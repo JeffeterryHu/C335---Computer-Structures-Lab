@@ -1,0 +1,16 @@
+* report.txt
+* Shichao Hu
+* 4/28/2016
+
+As I listed 1-11 tasks that we have break down for our final project
+I am responsible for the 1,2,3,5,8,9
+
+For each of the task, when I start drawing the objects, I used a 5x5 pixels of cube as the basic unit. Then use this according the coordinates to draw our guy, tree, and clouds.
+
+Then we did the move and disappear part together, we implemented the functions that we used in HW6 which called the moverect. As modifying the varibales in the function, we can move the object to a specific direction as we wanted. We encounted the most difficult part of our project when we deal with the disappear part. We have to determine what is the time point when the old trees and old clouds disappear then we will redraw the new ones.
+
+For the collision, we created a function to determine the position of the coordinate. If the right hand of the boy has the same y coordinate with the tree, then it has collision. Same for the right foot.
+
+As the this project needed, we implemented the nunchuk and SD card reading, also the WAV file reading. Since we did all of these in the previous lab, so it was easy to accomplish. Another difficulties was finding the right format the wav file, so I just downloaded the file we needed and then convert to the specific bitrate that our board can recognize.
+
+

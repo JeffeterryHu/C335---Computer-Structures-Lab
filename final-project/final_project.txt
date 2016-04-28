@@ -1,0 +1,27 @@
+* final_project.txt
+* partner: Hanwen Zhang & Shichao Hu
+* 4/28/2016
+
+Description:
+  Our game is like a super mario game with jumping over trees.
+  We have incorporated all the elements we have learned during the course, LCD, Audio, Nunchuk, and SD card
+  LCD will display the game interface.
+  A wav file will be played when the game is over.
+  Nunchuk c button is implemented in this game as the jump button
+  SD card stores the wav file we have modified.
+  In order to play the game, we can press either user_btn or Nunchuk C button to make our boy jump.
+  During the game, random trees(taller/lower) and clouds will display under same time difference.
+  Once the game is over, we have to press reset the button to play again.
+
+Tasks:
+  1. draw the interface
+  2. moves the object
+  3. make the object disappears
+  4. redraw the object
+  5. implementation of Nunchuk
+  6. collision detection
+  7. random tree display(taller/lower)
+  8. read SD card
+  9. WAV file playing
+  10. display the score and score changing
+  11. game over scene
