@@ -23,5 +23,9 @@ Tasks:
   7. random tree display(taller/lower)
   8. read SD card
   9. WAV file playing
-  10. display the score and score changing
-  11. game over scene
+  10. file converting
+  11. display the score and score changing
+  12. game over scene
+
+  Hanwen Zhang: 2,3,4,6,7,10,11
+  Shichao Hu: 1,2,5,8,9,10
